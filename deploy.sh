@@ -26,7 +26,7 @@ if ! aws s3api head-bucket --bucket "$CODE_BUCKET" 2>/dev/null; then
 fi
 
 echo "Bundling $PDF_LIB into generateSummary..."
-pip install "$PDF_LIB" --target backend/generateSummary --upgrade --quiet
+python3 -m pip install "$PDF_LIB" --target backend/generateSummary --upgrade --quiet
 
 aws cloudformation package \
   --template-file template.yaml \
