@@ -35,15 +35,15 @@ Conventions: parse body via `json.loads(event.get("body") or "{}")`; handle
 
 | ID | Task | File(s) | Depends on | Status |
 |----|------|---------|-----------|--------|
-| T0 | git init + scaffolding + `.gitignore` | `.gitignore`, `backend/*/` | — | PENDING |
-| T1 | createOrder + getAllOrders | `backend/createOrder/app.py`, `backend/getAllOrders/app.py` | T0 | PENDING |
-| T2 | getOrder + updateOrder | `backend/getOrder/app.py`, `backend/updateOrder/app.py` | T0 | PENDING |
-| T3 | deleteOrder | `backend/deleteOrder/app.py` | T0 | PENDING |
-| T4 | subscribe + unsubscribe | `backend/subscribe/app.py`, `backend/unsubscribe/app.py` | T0 | PENDING |
-| T5 | backupDeletedOrder | `backend/backupDeletedOrder/app.py` | T0 | PENDING |
-| T6 | generateSummary (fpdf2) | `backend/generateSummary/app.py` | T0 | PENDING |
-| T7 | analyzeImage (Rekognition) | `backend/analyzeImage/app.py` | T0 | PENDING |
-| T8 | doc sync (add analyzeImage) | `docs/resource-list.md`, `docs/api-contract.md` | T0 | PENDING |
+| T0 | git init + scaffolding + `.gitignore` | `.gitignore`, `backend/*/` | — | COMPLETE |
+| T1 | createOrder + getAllOrders | `backend/createOrder/app.py`, `backend/getAllOrders/app.py` | T0 | COMPLETE |
+| T2 | getOrder + updateOrder | `backend/getOrder/app.py`, `backend/updateOrder/app.py` | T0 | COMPLETE |
+| T3 | deleteOrder | `backend/deleteOrder/app.py` | T0 | COMPLETE |
+| T4 | subscribe + unsubscribe | `backend/subscribe/app.py`, `backend/unsubscribe/app.py` | T0 | COMPLETE |
+| T5 | backupDeletedOrder | `backend/backupDeletedOrder/app.py` | T0 | COMPLETE |
+| T6 | generateSummary (fpdf2) | `backend/generateSummary/app.py` | T0 | COMPLETE |
+| T7 | analyzeImage (Rekognition) | `backend/analyzeImage/app.py` | T0 | COMPLETE |
+| T8 | doc sync (add analyzeImage) | `docs/resource-list.md`, `docs/api-contract.md` | T0 | COMPLETE |
 | T9 | template.yaml — add analyzeImage | `template.yaml` | T7 | PENDING |
 | T10 | deploy.sh | `deploy.sh` | T9 | PENDING |
 
@@ -768,4 +768,22 @@ aws cloudformation describe-stacks --stack-name "$STACK_NAME" --region "$REGION"
 
 ## Execution Log
 
-_(Executors append entries here as tasks complete.)_
+### Wave 1 (T1–T8) — COMPLETE
+- **Dispatch**: 8 parallel `darwin-executor`s (T1–T7 Fast/Sonnet, T8 High/Opus), balanced profile.
+- **T1** createOrder + getAllOrders — COMPLETE; `backend/createOrder/app.py`, `backend/getAllOrders/app.py`.
+- **T2** getOrder + updateOrder — COMPLETE; `backend/getOrder/app.py`, `backend/updateOrder/app.py`.
+- **T3** deleteOrder — COMPLETE; `backend/deleteOrder/app.py` (delete + PutEvents OrderDeleted).
+- **T4** subscribe + unsubscribe — COMPLETE; `backend/subscribe/app.py`, `backend/unsubscribe/app.py`.
+- **T5** backupDeletedOrder — COMPLETE; `backend/backupDeletedOrder/app.py`.
+- **T6** generateSummary — COMPLETE; `backend/generateSummary/app.py` (fpdf2, bundled at deploy).
+- **T7** analyzeImage — COMPLETE; `backend/analyzeImage/app.py` (Rekognition + price map).
+- **T8** doc sync — COMPLETE; `docs/resource-list.md`, `docs/api-contract.md`.
+- **Verification**: `python3 -m py_compile backend/*/app.py` → all OK; both docs contain `analyze-image`.
+
+### Task T1: createOrder + getAllOrders
+- **Status**: COMPLETE
+- **Changes Made**: Wrote `backend/createOrder/app.py` (UUID generation, input validation, Decimal price, GSI partition key) and `backend/getAllOrders/app.py` (paginated GSI query, newest-first) verbatim from the plan spec.
+- **Files Modified**: `backend/createOrder/app.py` (created), `backend/getAllOrders/app.py` (created)
+- **Artifacts Produced**: `/Users/ivax/Uni/AWS final project/backend/createOrder/app.py`, `/Users/ivax/Uni/AWS final project/backend/getAllOrders/app.py`
+- **Contracts Consumed**: `.darwin/darwin-progress.md` (Task T1 spec; shared `_response`/`_default` contract from Overview)
+- **Notes/Risks**: Both files pass `python3 -m py_compile`. Runtime deps (`boto3`) are provided by the Lambda execution environment.

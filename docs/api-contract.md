@@ -144,6 +144,30 @@ in the body (assignment: return it, don't just log it).
 
 ---
 
+## 9. Analyze image (freestyle) — `POST /orders/analyze-image`
+**Request body:**
+```json
+{ "image": "<base64>" }
+```
+**Lambda:** `rekognition.detect_labels` on the decoded image bytes → derive a
+`category` and a `suggestedPrice` from a hardcoded price map keyed on the top
+labels; build a human-readable `description`.
+
+**Response `200`:**
+```json
+{
+  "description": "Wireless mouse",
+  "category": "Electronics",
+  "labels": [ { "name": "Mouse", "confidence": 98.7 } ],
+  "suggestedPrice": 29.99
+}
+```
+This endpoint does **not** create the order — it only returns suggestions the
+client uses to pre-fill the create form (the user reviews/edits, then calls
+`POST /orders`). **Errors:** `400` if `image` missing or not valid base64.
+
+---
+
 ## Internal contracts (not APIs)
 
 **`OrderDeleted` event** (`deleteOrder` → EventBridge):
@@ -183,3 +207,4 @@ Deleted: 2026-06-15T14:10:00Z
 | Subscribe | POST | `{base}/subscriptions` | `{"email":"user@example.com"}` | pending message |
 | Unsubscribe | DELETE | `{base}/subscriptions` | `{"email":"user@example.com"}` | unsubscribed message |
 | PDF summary | GET | `{base}/summary` | — | `{"url":"...","deletedOrderCount":N}` |
+| Analyze image | POST | `{base}/orders/analyze-image` | `{"image":"<base64>"}` | `{"description":"...","category":"...","labels":[...],"suggestedPrice":N}` |

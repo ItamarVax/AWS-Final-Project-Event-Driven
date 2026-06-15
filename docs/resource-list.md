@@ -62,7 +62,7 @@ subscribers (emails here).
 
 ---
 
-## 4. Lambda — the compute (9 resources)
+## 4. Lambda — the compute (10 resources)
 
 `AWS::Lambda::Function` per function. Upload code, AWS runs it on demand.
 
@@ -85,6 +85,7 @@ Shared config:
 | `unsubscribe` | API `DELETE /subscriptions` | SNS (unsubscribe) |
 | `generateSummary` | API `GET /summary` | S3 (read backups, write PDF) |
 | `backupDeletedOrder` | EventBridge rule | S3 (write `{orderId}.txt`) |
+| `analyzeImage` | API `POST /orders/analyze-image` | Rekognition (`detect_labels`) + hardcoded price map |
 
 ---
 
@@ -137,7 +138,7 @@ Decouples the delete from its reactions.
 | DynamoDB table (+ GSI inside) | 1 |
 | S3 buckets | 2 |
 | SNS topic | 1 |
-| Lambda functions | 9 |
+| Lambda functions | 10 |
 | API Gateway (api + paths + methods + perms + deploy/stage) | ~25 |
 | EventBridge (bus + rule + perms/policy) | ~3 |
 | **Total** | **~40 resources in one template** |
