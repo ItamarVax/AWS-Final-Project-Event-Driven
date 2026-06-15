@@ -45,7 +45,7 @@ Conventions: parse body via `json.loads(event.get("body") or "{}")`; handle
 | T7 | analyzeImage (Rekognition) | `backend/analyzeImage/app.py` | T0 | COMPLETE |
 | T8 | doc sync (add analyzeImage) | `docs/resource-list.md`, `docs/api-contract.md` | T0 | COMPLETE |
 | T9 | template.yaml — add analyzeImage | `template.yaml` | T7 | COMPLETE |
-| T10 | deploy.sh | `deploy.sh` | T9 | PENDING |
+| T10 | deploy.sh | `deploy.sh` | T9 | COMPLETE |
 
 **Execution waves**
 - Wave 0: T0 (serial — must run first)
@@ -779,6 +779,14 @@ aws cloudformation describe-stacks --stack-name "$STACK_NAME" --region "$REGION"
 - **T7** analyzeImage — COMPLETE; `backend/analyzeImage/app.py` (Rekognition + price map).
 - **T8** doc sync — COMPLETE; `docs/resource-list.md`, `docs/api-contract.md`.
 - **Verification**: `python3 -m py_compile backend/*/app.py` → all OK; both docs contain `analyze-image`.
+
+### Wave 2 (T9) — COMPLETE
+- **T9** template.yaml — COMPLETE; added `AnalyzeImageFn` + `/orders/analyze-image` (POST + OPTIONS/CORS) + permission; extended `ApiDeployment.DependsOn`. Verified: 49 resources, 10 Lambdas, `DependsOn` clean.
+
+### Wave 3 (T10) — COMPLETE
+- **T10** deploy.sh — COMPLETE; resolves LabRole, ensures code bucket, bundles `fpdf2==2.7.9`, `cloudformation package` + `deploy`, prints outputs. Verified: `bash -n` OK, executable.
+
+### All tasks COMPLETE. Backend implementation finished (not yet deployed to AWS).
 
 ### Task T1: createOrder + getAllOrders
 - **Status**: COMPLETE
