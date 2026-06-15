@@ -25,12 +25,14 @@ and would change if the stack is torn down and recreated in a fresh lab.
 | Lambda function names | `createOrder`, `getAllOrders`, `getOrder`, `updateOrder`, `deleteOrder`, `subscribe`, `unsubscribe`, `generateSummary`, `backupDeletedOrder`, `analyzeImage` | yes |
 | SNS topic ARN | `arn:aws:sns:us-east-1:436772392606:order-notifications` | yes (name) |
 | EventBridge bus / rule | `order-events` / `order-deleted-rule` | yes |
-| Backups bucket | `order-management-backupbucket-mrxvme7w0wn9` | **auto-generated** |
-| PDF bucket | `order-management-pdfbucket-vdcwkyh1jq2y` | **auto-generated** |
+| Backups bucket | `order-management-backups-436772392606` | yes (account-based) |
+| PDF bucket | `order-management-pdfs-436772392606` | yes (account-based) |
 | API Gateway id | `bqmrrznt2a` (base `https://bqmrrznt2a.execute-api.us-east-1.amazonaws.com/prod`) | **auto-generated** |
 
-> If you redeploy, refresh the three auto-generated values from the stack
-> outputs: `aws cloudformation describe-stacks --stack-name order-management --query "Stacks[0].Outputs"`.
+> The S3 bucket names are deterministic (account-based), so they stay stable
+> across redeploys. Only the **API Gateway id** is auto-generated; if you
+> redeploy, refresh it from the stack outputs:
+> `aws cloudformation describe-stacks --stack-name order-management --query "Stacks[0].Outputs"`.
 
 ---
 
@@ -42,7 +44,7 @@ and would change if the stack is torn down and recreated in a fresh lab.
 | **Lambda** | All business logic — one function per API + the event-driven backup worker. | `aws lambda get-function --function-name createOrder` (or the filtered `list-functions` below to see all 10) |
 | **API Gateway** | REST front door exposing the order/subscription/summary/analyze-image endpoints. | `aws apigateway get-rest-apis` |
 | **SNS** | Email notifications to subscribers when an order is deleted. | `aws sns get-topic-attributes --topic-arn arn:aws:sns:us-east-1:436772392606:order-notifications` |
-| **S3** | Object storage: per-order TXT backups and generated summary PDFs. | `aws s3 ls s3://order-management-backupbucket-mrxvme7w0wn9/` |
+| **S3** | Object storage: per-order TXT backups and generated summary PDFs. | `aws s3 ls s3://order-management-backups-436772392606/` |
 | **EventBridge** | Async delete fan-out: routes `OrderDeleted` to SNS (email) + backup Lambda (S3). | `aws events list-rules --event-bus-name order-events` |
 | **Rekognition** | Freestyle: AI image labels → order description/category + price suggestion. | `aws rekognition list-collections` |
 | **CloudFormation** | Infrastructure-as-code — provisions the entire stack. | `aws cloudformation describe-stacks --stack-name order-management` |
@@ -80,8 +82,8 @@ aws sns list-subscriptions-by-topic --topic-arn arn:aws:sns:us-east-1:4367723926
 
 # S3 — both buckets
 aws s3 ls | grep order-management
-aws s3 ls s3://order-management-backupbucket-mrxvme7w0wn9/
-aws s3 ls s3://order-management-pdfbucket-vdcwkyh1jq2y/
+aws s3 ls s3://order-management-backups-436772392606/
+aws s3 ls s3://order-management-pdfs-436772392606/
 
 # EventBridge — the rule and its two targets
 aws events list-rules --event-bus-name order-events --query 'Rules[].{Name:Name,State:State}'

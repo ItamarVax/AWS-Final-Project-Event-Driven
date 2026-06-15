@@ -140,7 +140,9 @@ curl -s "$BASE/orders"
 
 - **Email notifications**: SNS email subscriptions require the recipient to click
   a confirmation link before they receive messages.
-- **Auto-generated names**: the S3 bucket names and API Gateway id are generated
-  per deployment; read them from the stack outputs (above).
+- **Names**: the S3 buckets are deterministic —
+  `order-management-backups-<account>` / `order-management-pdfs-<account>` (unique
+  via your account id, stable across redeploys). Only the **API Gateway id** is
+  auto-generated; read it from the stack outputs (above).
 - **Teardown**: `aws cloudformation delete-stack --stack-name order-management`
   (empty the S3 buckets first if deletion is blocked).

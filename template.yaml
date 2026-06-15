@@ -57,9 +57,13 @@ Resources:
   # -------------------------------------------------------------------------
   BackupBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "order-management-backups-${AWS::AccountId}"
 
   PdfBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "order-management-pdfs-${AWS::AccountId}"
 
   # -------------------------------------------------------------------------
   # 3. SNS — email notification topic
