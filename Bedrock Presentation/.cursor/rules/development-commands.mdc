@@ -1,0 +1,29 @@
+---
+title: "Development Commands"
+description: "Project-specific development commands for Darwin framework"
+alwaysApply: false
+---
+
+# Development Commands
+
+This project has no package manager, build system, or test runner. The workflow is author HTML → preview in a browser → export to PPTX via an external render tool.
+
+## Setup
+No install step. Clone/open the directory; slides reference `assets/chrome.css` by relative path.
+
+## Preview
+- Open a single slide: open `slides/NN-*.html` in a browser (renders at the 1920×1080 canvas).
+- Quick local server (optional), e.g.:
+  ```
+  python3 -m http.server 8000
+  ```
+  then browse to `http://localhost:8000/slides/01-title.html`.
+
+## Slide Order
+- Edit `manifest.json` → `playlist` to add, remove, or reorder slides. Keep it in sync with the files in `slides/`.
+
+## Export (PPTX)
+- `AWS-Bedrock-Presentation.pptx` and `AWS-Bedrock-Text-Editable.pptx` are generated from the HTML by an external render/export tool, not a local CLI. Regenerate via that tool after slide edits; do not hand-edit the `.pptx` files.
+
+## Verify
+- Visual check only: open the changed slide(s) at 1920×1080 and confirm structure (`data-object` markers, z-index), palette (chrome.css vars), and type scale.

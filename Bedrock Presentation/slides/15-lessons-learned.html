@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lessons learned</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="15 Lessons">
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 2 &nbsp;·&nbsp; Lessons</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 15 &nbsp;·&nbsp; Earned wisdom</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">Earned Wisdom</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:72px;font-weight:600;line-height:1.04;color:#1A1714;letter-spacing:-0.025em;">Five things we wish<br>we'd known on day one.</div>
+  </div>
+
+  <!-- 4 numbered lessons in 2x2 + bottom gotcha row -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:430px;width:1680px;z-index:10;">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);column-gap:64px;row-gap:38px;">
+
+      <div style="display:grid;grid-template-columns:80px 1fr;column-gap:20px;align-items:start;">
+        <div class="serif" style="font-size:80px;font-weight:600;color:#B8472A;line-height:0.85;letter-spacing:-0.03em;">01</div>
+        <div>
+          <div class="serif" style="font-size:30px;font-weight:600;color:#1A1714;line-height:1.2;">One API, not <em>N</em> wrappers.</div>
+          <div class="serif" style="font-size:21px;color:#4A433B;line-height:1.45;margin-top:10px;">Converse meant <strong>zero per-provider request code</strong> for our Bedrock models. Our OpenAI &amp; OpenRouter paths each needed their own wrapper &mdash; which is exactly the proof.</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:80px 1fr;column-gap:20px;align-items:start;">
+        <div class="serif" style="font-size:80px;font-weight:600;color:#B8472A;line-height:0.85;letter-spacing:-0.03em;">02</div>
+        <div>
+          <div class="serif" style="font-size:30px;font-weight:600;color:#1A1714;line-height:1.2;">Tool-use &gt; prose parsing.</div>
+          <div class="serif" style="font-size:21px;color:#4A433B;line-height:1.45;margin-top:10px;">Force the model into your schema. Reliable JSON by construction beats clever regex every time.</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:80px 1fr;column-gap:20px;align-items:start;">
+        <div class="serif" style="font-size:80px;font-weight:600;color:#B8472A;line-height:0.85;letter-spacing:-0.03em;">03</div>
+        <div>
+          <div class="serif" style="font-size:30px;font-weight:600;color:#1A1714;line-height:1.2;">Cache the system prompt.</div>
+          <div class="serif" style="font-size:21px;color:#4A433B;line-height:1.45;margin-top:10px;">Real money when it's reused &mdash; cache reads bill at <strong>10%</strong> of the input rate. The biggest single-line cost win in the project.</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:80px 1fr;column-gap:20px;align-items:start;">
+        <div class="serif" style="font-size:80px;font-weight:600;color:#B8472A;line-height:0.85;letter-spacing:-0.03em;">04</div>
+        <div>
+          <div class="serif" style="font-size:30px;font-weight:600;color:#1A1714;line-height:1.2;">Build a provider seam.</div>
+          <div class="serif" style="font-size:21px;color:#4A433B;line-height:1.45;margin-top:10px;">Our <span class="mono" style="font-size:18px;">core/llm.py</span> abstraction means adding a provider is a <em>one</em>-<span class="mono" style="font-size:18px;">elif</span> change. Don't bind your app to one SDK.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Lesson 5 / Gotchas full-width strip -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:850px;width:1680px;height:130px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:160px;top:874px;width:1620px;z-index:10;">
+    <div style="display:grid;grid-template-columns:80px 1fr;column-gap:20px;align-items:start;">
+      <div class="serif" style="font-size:64px;font-weight:600;color:#E89A6A;line-height:0.85;letter-spacing:-0.03em;">05</div>
+      <div>
+        <div class="serif" style="font-size:24px;font-weight:600;color:#F4EFE6;line-height:1.2;">Mind the gotchas.</div>
+        <div class="serif" style="font-size:19px;color:#F4EFE6;line-height:1.45;margin-top:6px;opacity:0.9;">Region-anchored inference profiles &middot; <span class="mono" style="font-size:17px;color:#E89A6A;">CountTokens</span> needs the single-region ID &middot; not every model supports caching. Each one cost us a debugging hour the first time.</div>
+      </div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">15 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

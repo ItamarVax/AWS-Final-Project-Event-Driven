@@ -1,0 +1,634 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Event-Driven Serverless Order Management System (Final Project, Part B).
+  DynamoDB + API Gateway + Lambda (Python) + SNS + S3 + EventBridge.
+  Designed for the AWS Learner Lab: reuses the pre-existing LabRole (no IAM
+  roles are created by this template).
+
+# ---------------------------------------------------------------------------
+# Parameters
+# ---------------------------------------------------------------------------
+Parameters:
+  LabRoleArn:
+    Type: String
+    Description: >
+      ARN of the pre-existing Learner Lab execution role (LabRole). Every Lambda
+      uses this as its execution role, since the Learner Lab forbids creating
+      IAM roles. Find it with:
+      aws iam list-roles --query "Roles[?RoleName=='LabRole'].Arn" --output text
+
+  GsiPartitionValue:
+    Type: String
+    Default: ORDER
+    Description: Constant partition-key value used by the GSI to group all orders.
+
+Resources:
+
+  # -------------------------------------------------------------------------
+  # 1. DynamoDB — the orders table (with GSI for sorted-by-date retrieval)
+  # -------------------------------------------------------------------------
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: orders
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: orderId       # base table primary key (UUID)
+          AttributeType: S
+        - AttributeName: gsiPartition  # constant ("ORDER") — GSI partition key
+          AttributeType: S
+        - AttributeName: creationDate  # ISO-8601 string — GSI sort key
+          AttributeType: S
+      KeySchema:
+        - AttributeName: orderId
+          KeyType: HASH                # HASH = partition key
+      GlobalSecondaryIndexes:
+        - IndexName: byCreationDate
+          KeySchema:
+            - AttributeName: gsiPartition
+              KeyType: HASH
+            - AttributeName: creationDate
+              KeyType: RANGE           # RANGE = sort key
+          Projection:
+            ProjectionType: ALL        # full projection (read-heavy, tiny items)
+
+  # -------------------------------------------------------------------------
+  # 2. S3 — backups (one TXT per deleted order) and generated PDF summaries
+  # -------------------------------------------------------------------------
+  BackupBucket:
+    Type: AWS::S3::Bucket
+
+  PdfBucket:
+    Type: AWS::S3::Bucket
+
+  # -------------------------------------------------------------------------
+  # 3. SNS — email notification topic
+  # -------------------------------------------------------------------------
+  NotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: order-notifications
+
+  # -------------------------------------------------------------------------
+  # 4. Lambda functions (one per endpoint + one event-driven backup worker)
+  #    Code paths point at local dirs; `cloudformation package` rewrites them
+  #    to S3 locations at deploy time.
+  # -------------------------------------------------------------------------
+  CreateOrderFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: createOrder
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/createOrder
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref OrdersTable
+          GSI_PARTITION_VALUE: !Ref GsiPartitionValue
+
+  GetAllOrdersFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: getAllOrders
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/getAllOrders
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref OrdersTable
+          GSI_NAME: byCreationDate
+          GSI_PARTITION_VALUE: !Ref GsiPartitionValue
+
+  GetOrderFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: getOrder
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/getOrder
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref OrdersTable
+
+  UpdateOrderFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: updateOrder
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/updateOrder
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref OrdersTable
+
+  DeleteOrderFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: deleteOrder
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/deleteOrder
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref OrdersTable
+          EVENT_BUS_NAME: !Ref OrderEventBus
+          EVENT_SOURCE: orders.api
+
+  SubscribeFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: subscribe
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/subscribe
+      Environment:
+        Variables:
+          TOPIC_ARN: !Ref NotificationTopic
+
+  UnsubscribeFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: unsubscribe
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/unsubscribe
+      Environment:
+        Variables:
+          TOPIC_ARN: !Ref NotificationTopic
+
+  GenerateSummaryFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: generateSummary
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 30          # reads many TXT files + builds a PDF
+      MemorySize: 256
+      Code: ./backend/generateSummary   # bundle fpdf2 into this dir before packaging
+      Environment:
+        Variables:
+          BACKUP_BUCKET: !Ref BackupBucket
+          PDF_BUCKET: !Ref PdfBucket
+          URL_EXPIRY_SECONDS: '3600'
+
+  BackupDeletedOrderFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: backupDeletedOrder
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 10
+      Code: ./backend/backupDeletedOrder
+      Environment:
+        Variables:
+          BACKUP_BUCKET: !Ref BackupBucket
+
+  # -------------------------------------------------------------------------
+  # 5. API Gateway — REST API, paths, methods, permissions, deployment, stage
+  # -------------------------------------------------------------------------
+  Api:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: orders-api
+      Description: REST API for the Order Management System
+
+  # ----- Paths (resources) -----
+  OrdersResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref Api
+      ParentId: !GetAtt Api.RootResourceId
+      PathPart: orders
+
+  OrderIdResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref Api
+      ParentId: !Ref OrdersResource
+      PathPart: '{orderId}'
+
+  SubscriptionsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref Api
+      ParentId: !GetAtt Api.RootResourceId
+      PathPart: subscriptions
+
+  SummaryResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref Api
+      ParentId: !GetAtt Api.RootResourceId
+      PathPart: summary
+
+  # ----- Methods on /orders -----
+  CreateOrderMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref OrdersResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateOrderFn.Arn}/invocations
+
+  GetAllOrdersMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref OrdersResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAllOrdersFn.Arn}/invocations
+
+  OrdersOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref OrdersResource
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ''
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # ----- Methods on /orders/{orderId} -----
+  GetOrderMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref OrderIdResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      RequestParameters:
+        method.request.path.orderId: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetOrderFn.Arn}/invocations
+
+  UpdateOrderMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref OrderIdResource
+      HttpMethod: PUT
+      AuthorizationType: NONE
+      RequestParameters:
+        method.request.path.orderId: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UpdateOrderFn.Arn}/invocations
+
+  DeleteOrderMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref OrderIdResource
+      HttpMethod: DELETE
+      AuthorizationType: NONE
+      RequestParameters:
+        method.request.path.orderId: true
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteOrderFn.Arn}/invocations
+
+  OrderIdOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref OrderIdResource
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,PUT,DELETE,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ''
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # ----- Methods on /subscriptions -----
+  SubscribeMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref SubscriptionsResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SubscribeFn.Arn}/invocations
+
+  UnsubscribeMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref SubscriptionsResource
+      HttpMethod: DELETE
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${UnsubscribeFn.Arn}/invocations
+
+  SubscriptionsOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref SubscriptionsResource
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+              method.response.header.Access-Control-Allow-Methods: "'POST,DELETE,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ''
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # ----- Methods on /summary -----
+  GetSummaryMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref SummaryResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GenerateSummaryFn.Arn}/invocations
+
+  SummaryOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref SummaryResource
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ''
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+
+  # ----- Lambda permissions: allow API Gateway to invoke each function -----
+  CreateOrderPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CreateOrderFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  GetAllOrdersPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GetAllOrdersFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  GetOrderPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GetOrderFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  UpdateOrderPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref UpdateOrderFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  DeleteOrderPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DeleteOrderFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  SubscribePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref SubscribeFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  UnsubscribePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref UnsubscribeFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  GenerateSummaryPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref GenerateSummaryFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
+  # ----- Deployment + stage (must wait for all methods) -----
+  ApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - CreateOrderMethod
+      - GetAllOrdersMethod
+      - OrdersOptionsMethod
+      - GetOrderMethod
+      - UpdateOrderMethod
+      - DeleteOrderMethod
+      - OrderIdOptionsMethod
+      - SubscribeMethod
+      - UnsubscribeMethod
+      - SubscriptionsOptionsMethod
+      - GetSummaryMethod
+      - SummaryOptionsMethod
+    Properties:
+      RestApiId: !Ref Api
+
+  ApiStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      RestApiId: !Ref Api
+      DeploymentId: !Ref ApiDeployment
+      StageName: prod
+
+  # -------------------------------------------------------------------------
+  # 6. EventBridge — async delete fan-out (SNS email + S3 backup)
+  # -------------------------------------------------------------------------
+  OrderEventBus:
+    Type: AWS::Events::EventBus
+    Properties:
+      Name: order-events
+
+  OrderDeletedRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: order-deleted-rule
+      EventBusName: !Ref OrderEventBus
+      EventPattern:
+        source:
+          - orders.api
+        detail-type:
+          - OrderDeleted
+      Targets:
+        # Target 1: backup Lambda (writes {orderId}.txt to S3)
+        - Id: backup-target
+          Arn: !GetAtt BackupDeletedOrderFn.Arn
+        # Target 2: SNS topic — Input Transformer builds a human-readable email
+        - Id: email-target
+          Arn: !Ref NotificationTopic
+          InputTransformer:
+            InputPathsMap:
+              orderId: $.detail.orderId
+              price: $.detail.price
+              description: $.detail.description
+              deletedAt: $.detail.deletedAt
+            InputTemplate: |
+              "An order was deleted from the Order Management System."
+              ""
+              "Order ID: <orderId>"
+              "Description: <description>"
+              "Price: <price>"
+              "Deleted at: <deletedAt>"
+
+  # Allow EventBridge to invoke the backup Lambda
+  BackupInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref BackupDeletedOrderFn
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt OrderDeletedRule.Arn
+
+  # Allow the EventBridge rule to publish to the SNS topic
+  TopicPolicyForEvents:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref NotificationTopic
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowEventBridgePublish
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sns:Publish
+            Resource: !Ref NotificationTopic
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !GetAtt OrderDeletedRule.Arn
+
+# ---------------------------------------------------------------------------
+# Outputs — copy into the web client config and the deliverable tables
+# ---------------------------------------------------------------------------
+Outputs:
+  ApiBaseUrl:
+    Description: Base URL of the deployed REST API (append /orders, /summary, etc.)
+    Value: !Sub https://${Api}.execute-api.${AWS::Region}.amazonaws.com/prod
+
+  OrdersTableName:
+    Description: DynamoDB table name
+    Value: !Ref OrdersTable
+
+  BackupBucketName:
+    Description: S3 bucket holding per-order TXT backups
+    Value: !Ref BackupBucket
+
+  PdfBucketName:
+    Description: S3 bucket holding generated summary PDFs
+    Value: !Ref PdfBucket
+
+  TopicArn:
+    Description: SNS topic ARN for order notifications
+    Value: !Ref NotificationTopic
+
+  EventBusName:
+    Description: EventBridge custom bus for order events
+    Value: !Ref OrderEventBus

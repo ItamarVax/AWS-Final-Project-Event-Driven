@@ -1,0 +1,99 @@
+/* AWS Bedrock deck — Anthropic-paper aesthetic
+   Warm cream paper, deep ink, restrained ember accent. */
+
+@import url('https://fonts.googleapis.com/css2?family=Tiempos+Headline&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Palette */
+  --paper:        #F4EFE6;   /* warm cream */
+  --paper-deep:   #ECE5D6;   /* slightly deeper card surface */
+  --rule:         #1A1714;   /* deep ink for rules + body */
+  --ink:          #1A1714;   /* primary text */
+  --ink-soft:     #4A433B;   /* secondary text */
+  --ink-mute:     #847B6E;   /* tertiary / meta */
+  --ember:        #B8472A;   /* restrained accent (oxidized red-orange) */
+  --ember-deep:   #8E331C;
+  --gold:         #A88030;   /* secondary accent — rarely used */
+  --code-bg:      #1A1714;   /* code on dark for contrast */
+  --code-ink:     #F4EFE6;
+  --code-mute:    #847B6E;
+  --code-ember:   #E89A6A;
+  --code-gold:    #D4B66A;
+  --code-blue:    #9FB8C8;
+
+  /* Type scale */
+  --t-display:    96px;
+  --t-h1:         64px;
+  --t-h2:         44px;
+  --t-h3:         32px;
+  --t-body:       26px;
+  --t-small:      20px;
+  --t-meta:       16px;
+
+  --f-serif:      'Source Serif 4', 'Tiempos Headline', Georgia, serif;
+  --f-sans:       'Inter', system-ui, sans-serif;
+  --f-mono:       'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Slide-level reset (applied via inline styles per editor contract, but
+   utility class definitions live here for re-use INSIDE data-objects). */
+
+.serif    { font-family: var(--f-serif); }
+.sans     { font-family: var(--f-sans); letter-spacing: -0.005em; }
+.mono     { font-family: var(--f-mono); }
+
+.eyebrow {
+  font-family: var(--f-sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.meta {
+  font-family: var(--f-sans);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+}
+
+/* Page-number plate, ghost-blocks etc. used inside data-objects */
+.page-num {
+  font-family: var(--f-sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--ink-mute);
+}
+
+/* Code block convention — used inside textbox data-objects only.
+   Outer wrapper supplies the dark surface; spans color tokens. */
+.codeblock {
+  background: var(--code-bg);
+  color: var(--code-ink);
+  font-family: var(--f-mono);
+  font-size: 20px;
+  line-height: 1.55;
+  padding: 28px 32px;
+  border-radius: 4px;
+  white-space: pre;
+}
+.codeblock .c-kw   { color: #C39AD9; }   /* keywords */
+.codeblock .c-str  { color: var(--code-gold); }  /* strings */
+.codeblock .c-num  { color: var(--code-ember); } /* numbers */
+.codeblock .c-com  { color: var(--code-mute); font-style: italic; }
+.codeblock .c-fn   { color: var(--code-blue); }
+.codeblock .c-em   { color: var(--code-ember); }
+
+/* Subtle textured paper feel without imagery */
+.paper-grain {
+  background-image:
+    radial-gradient(rgba(26,23,20,0.025) 1px, transparent 1px);
+  background-size: 4px 4px;
+}

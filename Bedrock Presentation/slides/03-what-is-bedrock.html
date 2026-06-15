@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>What is Bedrock</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="03 What is Bedrock">
+
+  <!-- header rule + masthead -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 1 &nbsp;·&nbsp; Foundations</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 03 &nbsp;·&nbsp; Definition</div>
+  </div>
+
+  <!-- eyebrow + question-style title -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">Definition</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:80px;font-weight:600;line-height:1.0;color:#1A1714;letter-spacing:-0.025em;">What, exactly, is Bedrock?</div>
+  </div>
+
+  <!-- Lede paragraph (one-line definition) -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:340px;width:1500px;z-index:10;">
+    <div class="serif" style="font-size:34px;font-weight:400;line-height:1.4;color:#1A1714;">
+      <span class="serif" style="float:left;font-size:90px;font-weight:600;color:#B8472A;line-height:0.75;padding:8px 14px 0 0;">A</span>
+      <em>fully-managed AWS API</em> that fronts a catalogue of foundation models &mdash; Anthropic Claude, Amazon Nova &amp; Titan, Meta Llama, Mistral, Cohere &mdash; behind one request shape, one auth model, one bill.
+    </div>
+  </div>
+
+  <!-- divider -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:600px;width:1680px;height:1px;background:#1A1714;opacity:0.4;z-index:1;"></div>
+
+  <!-- Three pillars -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:635px;width:1680px;z-index:10;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);column-gap:48px;">
+      <div>
+        <div class="serif" style="font-size:18px;font-weight:600;letter-spacing:0.22em;color:#B8472A;text-transform:uppercase;">i.</div>
+        <div class="serif" style="font-size:38px;font-weight:600;color:#1A1714;line-height:1.15;margin-top:10px;">Many models,<br>one API</div>
+        <div style="height:2px;width:48px;background:#1A1714;margin:22px 0;"></div>
+        <div class="serif" style="font-size:22px;font-weight:400;color:#4A433B;line-height:1.45;">Call <span class="mono" style="font-size:20px;">bedrock-runtime</span> the way you call any other AWS service. No per-vendor SDK, no per-vendor account.</div>
+      </div>
+      <div>
+        <div class="serif" style="font-size:18px;font-weight:600;letter-spacing:0.22em;color:#B8472A;text-transform:uppercase;">ii.</div>
+        <div class="serif" style="font-size:38px;font-weight:600;color:#1A1714;line-height:1.15;margin-top:10px;">No servers,<br>no GPUs</div>
+        <div style="height:2px;width:48px;background:#1A1714;margin:22px 0;"></div>
+        <div class="serif" style="font-size:22px;font-weight:400;color:#4A433B;line-height:1.45;">Serverless in the course sense &mdash; AWS provisions, hosts, scales the model. You never see a GPU instance.</div>
+      </div>
+      <div>
+        <div class="serif" style="font-size:18px;font-weight:600;letter-spacing:0.22em;color:#B8472A;text-transform:uppercase;">iii.</div>
+        <div class="serif" style="font-size:38px;font-weight:600;color:#1A1714;line-height:1.15;margin-top:10px;">Pay per token,<br>scales to zero</div>
+        <div style="height:2px;width:48px;background:#1A1714;margin:22px 0;"></div>
+        <div class="serif" style="font-size:22px;font-weight:400;color:#4A433B;line-height:1.45;">No minimum fleet, no idle GPU bill. Quiet hour costs you nothing; a spike just bills more tokens.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom analogy strip -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:920px;width:6px;height:60px;background:#B8472A;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:148px;top:928px;width:1620px;z-index:10;">
+    <div class="serif" style="font-size:26px;font-weight:400;font-style:italic;color:#1A1714;line-height:1.35;">
+      <span class="sans" style="font-style:normal;font-size:14px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">Mental model &nbsp;·&nbsp;</span>
+      Bedrock is to LLMs what <strong style="color:#1A1714;">S3</strong> is to storage &mdash; a managed AWS service you <em>call</em>, not infrastructure you <em>run</em>.
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">03 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

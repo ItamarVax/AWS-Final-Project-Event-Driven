@@ -1,0 +1,49 @@
+---
+title: "Code Quality Standards"
+description: "Project-specific code quality rules for Darwin framework"
+alwaysApply: true
+---
+
+# Code Quality Standards
+
+## Backend (Python Lambdas)
+- Each Lambda has a `lambda_handler(event, context)` entry point.
+- Use `boto3` for all AWS access; create clients/resources at module scope so
+  they are reused across warm invocations.
+- Return API Gateway proxy responses: `{"statusCode": int, "headers": {...},
+  "body": json.dumps(...)}`. Always set CORS headers
+  (`Access-Control-Allow-Origin`) so the Amplify-hosted client can call the API.
+- Validate and parse input from `event` defensively (body may be a JSON string).
+- Handle errors explicitly and return appropriate status codes (4xx for bad
+  input, 5xx for server errors) with a JSON error body — never leak stack traces.
+- Keep async side effects (notification, backup) off the critical path of the
+  delete response (DynamoDB Streams + separate Lambda, SNS, or async invoke).
+
+## Import Standards
+- Standard library first, then third-party (`boto3`, PDF lib), then local
+  modules — grouped and ordered.
+- Lambda dependencies beyond the AWS-provided `boto3` (e.g. the PDF library) must
+  be packaged in the deployment zip or a Lambda layer.
+
+## Type Annotations
+- Annotate function signatures where it aids clarity (handlers, helpers). Not
+  strictly enforced, but preferred for shared/utility functions.
+
+## Frontend (HTML/CSS/JS)
+- Vanilla HTML/CSS/JS — no framework or build step required.
+- All API calls go through `fetch`; keep the API base URL in a single config
+  constant so it is easy to point at the deployed API Gateway URL.
+- Always display the result returned from the backend to the user (success and
+  error). No business logic in the client.
+
+## Formatting
+- Python: 4-space indent, PEP 8. `black`/`ruff format` if available (not yet
+  configured — add a config if you adopt one).
+- JS/HTML/CSS: 2-space indent, consistent style.
+
+## Linting
+- No linter configured yet. If adopted, prefer `ruff` for Python.
+
+## Quality Commands
+- No automated quality tooling configured yet. See `development-commands.mdc`
+  for the AWS CLI verification commands required by the deliverable.

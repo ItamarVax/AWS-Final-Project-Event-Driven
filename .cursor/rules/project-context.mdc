@@ -1,0 +1,64 @@
+---
+title: "Project Context"
+description: "Project-specific context for Darwin framework"
+alwaysApply: true
+---
+
+# Project Context
+
+## Overview
+Event-Driven Serverless Order Management System — a cloud-based AWS assignment
+(Final Project, Part B). Orders are managed through REST APIs and the system
+reacts automatically to important events (order deletion triggers async
+notification + backup). The entire solution must be **serverless, event-driven,
+and scalable**. The deliverable is graded out of 100 points across the modules
+listed below.
+
+## Key Modules
+- **Order Management (55 pts)** — DynamoDB `orders` table + API Gateway REST APIs
+  (create, get-all sorted by creation date, get-one, update, delete), each
+  backed by a Python Lambda. Data persisted in DynamoDB.
+- **Notification Subscription (10 pts)** — REST APIs to register an email for
+  notifications and to unsubscribe (Amazon SNS).
+- **Order Deletion → Notification (10 pts)** — on delete, async email with the
+  deleted order details. Must NOT block or delay the delete response.
+- **Order Deletion → Backup (5 pts)** — on delete, async write of order details
+  as a TXT file to S3. Must NOT block the delete response.
+- **PDF Summary download (5 pts)** — API that reads all TXT backups in S3,
+  builds a summary PDF, stores it in S3, and returns the PDF URL in the response
+  body (not logged).
+- **Freestyle enhancement (5 pts)** — an additional AWS service adding clear,
+  demonstrable, UI-visible value. *To be decided during design/innovate.*
+- **Client (10 pts)** — web client (HTML/CSS/JS) hosted on AWS Amplify. Calls
+  REST APIs only; contains NO backend/business logic.
+
+## Suggested Repository Layout
+- `backend/` — Python Lambda functions (one per API/event handler) + shared code
+- `frontend/` — web client: `index.html`, CSS, JS calling the APIs via `fetch`
+- `docs/` — deliverables: AWS diagram, AWS-setup-per-service table, APIs list,
+  tested-flows screenshots, freestyle explanation, Word submission
+
+## Entry Points
+- **Backend**: Lambda handlers in `backend/` (deployed via AWS console / CLI in
+  the AWS Learner Lab). No local server.
+- **Frontend**: `frontend/index.html` (static), hosted on AWS Amplify; API base
+  URL configured to the API Gateway invoke URL.
+
+## Architecture
+Client (Amplify-hosted web app) → API Gateway → Lambda → DynamoDB. The delete
+flow fans out asynchronously: delete Lambda removes the item and emits an event;
+SNS sends the notification email and an async backup writes a TXT file to S3 —
+neither blocks the delete response. A separate PDF-summary Lambda aggregates the
+S3 TXT files into a PDF stored back in S3.
+
+## Project-Specific Safety
+- The **client must never contain backend/business logic** — it only calls APIs
+  and displays the returned result.
+- Deletion notification and backup **must be asynchronous** — never make the
+  delete response wait on them.
+- The PDF summary URL must be **returned in the API response body**, not printed
+  to logs.
+- The `orders` table must have a justified primary key and proper sort key.
+- Every AWS service used must be verifiable via a **runnable CLI command** in the
+  AWS Learner Lab — keep resource names accurate and documented in `docs/`.
+- All deliverables are submitted in **one Word document**; keep `docs/` in sync.

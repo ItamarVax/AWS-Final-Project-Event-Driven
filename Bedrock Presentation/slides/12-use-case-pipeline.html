@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Real-world use case</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="12 Use case pipeline">
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 2 &nbsp;·&nbsp; Field notes</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 12 &nbsp;·&nbsp; The pipeline</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">Case Study &mdash; BigID PII classifier</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:72px;font-weight:600;line-height:1.04;color:#1A1714;letter-spacing:-0.025em;">An LLM judging an LLM,<br>writing the next prompt.</div>
+  </div>
+
+  <!-- Problem statement -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:415px;width:760px;z-index:10;">
+    <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.26em;color:#B8472A;text-transform:uppercase;margin-bottom:14px;">The Problem</div>
+    <div class="serif" style="font-size:26px;font-weight:400;line-height:1.45;color:#1A1714;">Regex flags candidate PII &mdash; lots of false positives. We need an LLM to judge <em>true vs false positive</em> per PII type, guided by a &ldquo;classifier brief.&rdquo;</div>
+    <div style="height:1px;width:60px;background:#1A1714;margin:30px 0;"></div>
+    <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.26em;color:#B8472A;text-transform:uppercase;margin-bottom:14px;">The Loop</div>
+    <div class="serif" style="font-size:24px;font-weight:500;font-style:italic;line-height:1.45;color:#1A1714;">spec &rarr; generate dataset &rarr; label &rarr; judge errors &rarr; refine prompt &rarr; validate &nbsp;(iterate)</div>
+  </div>
+
+  <!-- vertical divider -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:920px;top:415px;width:1px;height:530px;background:#1A1714;opacity:0.35;z-index:1;"></div>
+
+  <!-- Diagram: agent boxes arranged in a loop -->
+  <!-- canvas at left 950, top 420, ~800w 540h -->
+
+  <!-- spec_agent -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:960px;top:430px;width:200px;height:80px;background:transparent;border:1.5px solid #1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:960px;top:445px;width:200px;text-align:center;z-index:10;">
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.22em;color:#B8472A;text-transform:uppercase;">Step 1</div>
+    <div class="mono" style="font-size:18px;font-weight:600;color:#1A1714;margin-top:6px;">spec_agent</div>
+  </div>
+
+  <!-- arrow right -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1160px;top:455px;width:60px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:34px;font-weight:600;color:#B8472A;line-height:1;">&rarr;</div>
+  </div>
+
+  <!-- prompt_agent -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:1220px;top:430px;width:200px;height:80px;background:transparent;border:1.5px solid #1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1220px;top:445px;width:200px;text-align:center;z-index:10;">
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.22em;color:#B8472A;text-transform:uppercase;">Step 2</div>
+    <div class="mono" style="font-size:18px;font-weight:600;color:#1A1714;margin-top:6px;">prompt_agent</div>
+  </div>
+
+  <!-- arrow right -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1420px;top:455px;width:60px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:34px;font-weight:600;color:#B8472A;line-height:1;">&rarr;</div>
+  </div>
+
+  <!-- dataset_agent -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:1480px;top:430px;width:200px;height:80px;background:transparent;border:1.5px solid #1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1480px;top:445px;width:200px;text-align:center;z-index:10;">
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.22em;color:#B8472A;text-transform:uppercase;">Step 3</div>
+    <div class="mono" style="font-size:18px;font-weight:600;color:#1A1714;margin-top:6px;">dataset_agent</div>
+  </div>
+
+  <!-- arrow down from dataset -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1545px;top:515px;width:70px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:42px;font-weight:600;color:#B8472A;line-height:0.7;">&darr;</div>
+  </div>
+
+  <!-- validator -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:1480px;top:600px;width:200px;height:80px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1480px;top:615px;width:200px;text-align:center;z-index:10;">
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.22em;color:#E89A6A;text-transform:uppercase;">Validates</div>
+    <div class="mono" style="font-size:18px;font-weight:600;color:#F4EFE6;margin-top:6px;">validator_agent</div>
+  </div>
+
+  <!-- arrow left from validator to judge -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1420px;top:625px;width:60px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:34px;font-weight:600;color:#B8472A;line-height:1;">&larr;</div>
+  </div>
+
+  <!-- judge_agent (center bottom-ish) -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:1220px;top:600px;width:200px;height:80px;background:transparent;border:1.5px solid #B8472A;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1220px;top:615px;width:200px;text-align:center;z-index:10;">
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.22em;color:#B8472A;text-transform:uppercase;">Judges errors</div>
+    <div class="mono" style="font-size:18px;font-weight:600;color:#1A1714;margin-top:6px;">judge_agent</div>
+  </div>
+
+  <!-- arrow up-left back to prompt_agent (feedback) -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1145px;top:600px;width:90px;z-index:10;">
+    <div class="serif" style="font-size:34px;font-weight:600;color:#B8472A;line-height:0.9;text-align:right;">&larr;</div>
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.2em;color:#B8472A;text-transform:uppercase;text-align:right;margin-top:0;">refines</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1295px;top:515px;width:60px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:42px;font-weight:600;color:#B8472A;line-height:0.7;">&uarr;</div>
+  </div>
+
+  <!-- helpers strip -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:960px;top:760px;width:720px;height:1px;background:#1A1714;opacity:0.3;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:960px;top:780px;width:720px;z-index:10;">
+    <div class="sans" style="font-size:12px;font-weight:600;letter-spacing:0.22em;color:#847B6E;text-transform:uppercase;margin-bottom:8px;">Helpers</div>
+    <div class="mono" style="font-size:18px;color:#4A433B;line-height:1.5;">error_analyzer &nbsp;·&nbsp; prompt_modifier &nbsp;·&nbsp; cluster_map</div>
+  </div>
+
+  <!-- bottom takeaway -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:920px;width:6px;height:60px;background:#B8472A;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:148px;top:928px;width:1620px;z-index:10;">
+    <div class="serif" style="font-size:24px;font-weight:400;font-style:italic;line-height:1.4;color:#1A1714;">
+      <span class="sans" style="font-style:normal;font-size:13px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">The point &nbsp;·&nbsp;</span>
+      Every box above is a Bedrock call. The system <em>automatically writes</em> the prompt that a downstream validator uses.
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">12 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Architecture & components</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="06 Architecture">
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 1 &nbsp;·&nbsp; Mechanics</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 06 &nbsp;·&nbsp; Components</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">Architecture</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:76px;font-weight:600;line-height:1.04;color:#1A1714;letter-spacing:-0.025em;">From your code<br>to the model.</div>
+  </div>
+
+  <!-- Architecture diagram (left half, ~900px wide) -->
+  <!-- Box 1: Your app -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:480px;width:380px;height:90px;background:transparent;border:1.5px solid #1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:138px;top:496px;width:340px;z-index:10;">
+    <div class="sans" style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">Your application</div>
+    <div class="mono" style="font-size:21px;font-weight:600;color:#1A1714;margin-top:6px;">boto3 · aioboto3</div>
+  </div>
+
+  <!-- arrow + label -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:585px;width:380px;text-align:center;z-index:10;">
+    <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.20em;color:#B8472A;text-transform:uppercase;line-height:1.1;">IAM-signed HTTPS</div>
+    <div class="serif" style="font-size:48px;font-weight:600;color:#1A1714;line-height:0.6;margin-top:4px;">&darr;</div>
+  </div>
+
+  <!-- Box 2: bedrock-runtime -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:680px;width:380px;height:90px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:138px;top:696px;width:340px;z-index:10;">
+    <div class="sans" style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#E89A6A;text-transform:uppercase;">Runtime endpoint (regional)</div>
+    <div class="mono" style="font-size:21px;font-weight:600;color:#F4EFE6;margin-top:6px;">bedrock-runtime</div>
+  </div>
+
+  <!-- horizontal arrow to FM -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:510px;top:706px;width:120px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:42px;font-weight:600;color:#B8472A;line-height:1;">&rarr;</div>
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.20em;color:#847B6E;text-transform:uppercase;margin-top:-8px;">routed by profile</div>
+  </div>
+
+  <!-- Box 3: FM -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:640px;top:680px;width:260px;height:90px;background:transparent;border:1.5px solid #B8472A;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:658px;top:696px;width:230px;z-index:10;">
+    <div class="sans" style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">Foundation model</div>
+    <div class="serif" style="font-size:18px;font-weight:500;color:#1A1714;margin-top:4px;font-style:italic;">Claude · Nova · Llama</div>
+  </div>
+
+  <!-- vertical arrow down from runtime -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:778px;width:380px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:48px;font-weight:600;color:#847B6E;line-height:0.6;margin-top:4px;">&darr;</div>
+  </div>
+
+  <!-- Box 4: CloudWatch -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:858px;width:380px;height:70px;background:transparent;border:1px dashed #847B6E;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:138px;top:872px;width:340px;z-index:10;">
+    <div class="sans" style="font-size:11px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;">Telemetry</div>
+    <div class="mono" style="font-size:18px;font-weight:500;color:#4A433B;margin-top:2px;">CloudWatch · cost metrics</div>
+  </div>
+
+  <!-- vertical divider -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:980px;top:430px;width:1px;height:520px;background:#1A1714;opacity:0.35;z-index:1;"></div>
+
+  <!-- Right column: code -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1020px;top:430px;width:780px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;margin-bottom:4px;">Real code · <span style="color:#847B6E;">core/bedrock.py</span></div>
+    <div class="serif" style="font-size:22px;font-weight:500;color:#1A1714;font-style:italic;">Creating the client</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1020px;top:498px;width:780px;z-index:10;">
+    <pre style="margin:0;background:#1A1714;color:#F4EFE6;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:18px;line-height:1.6;padding:28px 32px;border-radius:4px;white-space:pre;">
+<span style="color:#9FB8C8;">session</span> = boto3.<span style="color:#E89A6A;">Session</span>(
+    profile_name=profile,
+    region_name=region,
+)
+
+<span style="color:#9FB8C8;">client</span>  = session.<span style="color:#E89A6A;">client</span>(
+    <span style="color:#D4B66A;">"bedrock-runtime"</span>,
+    config=<span style="color:#9FB8C8;">config</span>,   <span style="color:#847B6E;font-style:italic;"># 600s read, 6 retries</span>
+)</pre>
+  </div>
+
+  <!-- 4 components callout -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1020px;top:790px;width:780px;z-index:10;">
+    <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;margin-bottom:14px;">Four components per call</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);column-gap:24px;row-gap:14px;">
+      <div class="serif" style="font-size:21px;color:#1A1714;line-height:1.3;"><strong>1.</strong> Runtime client</div>
+      <div class="serif" style="font-size:21px;color:#1A1714;line-height:1.3;"><strong>2.</strong> Model / profile ID</div>
+      <div class="serif" style="font-size:21px;color:#1A1714;line-height:1.3;"><strong>3.</strong> Request (sys + msgs + cfg)</div>
+      <div class="serif" style="font-size:21px;color:#1A1714;line-height:1.3;"><strong>4.</strong> Response (content + tokens)</div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">06 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

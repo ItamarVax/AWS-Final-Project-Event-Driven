@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "format": "html",
+  "metadata": {
+    "title": "AWS Bedrock — Managed Generative AI on AWS",
+    "description": "Student-led 24-min presentation. Part 1: what Bedrock is & how it works. Part 2: Bedrock in practice + live demo on a real PII-classification pipeline.",
+    "author": ""
+  },
+  "canvas": {"width": 1920, "height": 1080},
+  "playlist": [
+    "01-title.html",
+    "02-agenda.html",
+    "03-what-is-bedrock.html",
+    "04-problem-it-solves.html",
+    "05-where-it-fits.html",
+    "06-architecture.html",
+    "07-converse-api.html",
+    "08-tool-use.html",
+    "09-cost-quality-levers.html",
+    "10-alternatives.html",
+    "11-advantages-limitations.html",
+    "12-use-case-pipeline.html",
+    "13-model-mix-cost.html",
+    "14-live-demo.html",
+    "15-lessons-learned.html",
+    "16-wrap-qa.html"
+  ]
+}

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agenda + Hook</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="02 Agenda">
+
+  <!-- header rule + masthead -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Opening &nbsp;·&nbsp; Set the stakes</div>
+  </div>
+  </div>
+
+  <!-- Pull quote (the hook) -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:200px;width:130px;z-index:10;">
+    <div class="serif" style="font-size:200px;font-weight:600;color:#B8472A;line-height:0.7;">&ldquo;</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:260px;top:230px;width:1300px;z-index:10;">
+    <div class="serif" style="font-size:64px;font-weight:500;line-height:1.18;color:#1A1714;letter-spacing:-0.015em;">Every LLM call in a production system we run<br>at BigID goes through Bedrock.</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:260px;top:430px;width:1100px;z-index:10;">
+    <div class="sans" style="font-size:20px;font-weight:600;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">&mdash; Today's hook, and our promise</div>
+  </div>
+
+  <!-- divider -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:540px;width:1680px;height:1px;background:#1A1714;opacity:0.4;z-index:1;"></div>
+
+  <!-- Roadmap header -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:570px;width:900px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">The Roadmap</div>
+  </div>
+
+  <!-- Roadmap chapters as 5 columns -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:625px;width:1680px;z-index:10;">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);column-gap:32px;">
+      <div>
+        <div class="serif" style="font-size:54px;font-weight:600;color:#B8472A;line-height:1;">I</div>
+        <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.20em;color:#847B6E;text-transform:uppercase;margin-top:18px;">Foundations</div>
+        <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;line-height:1.2;margin-top:6px;">What Bedrock is</div>
+        <div class="serif" style="font-size:20px;font-weight:400;color:#4A433B;line-height:1.4;margin-top:14px;font-style:italic;">The managed-API thesis &amp; the problem it removes.</div>
+      </div>
+      <div>
+        <div class="serif" style="font-size:54px;font-weight:600;color:#B8472A;line-height:1;">II</div>
+        <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.20em;color:#847B6E;text-transform:uppercase;margin-top:18px;">Mechanics</div>
+        <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;line-height:1.2;margin-top:6px;">How it works</div>
+        <div class="serif" style="font-size:20px;font-weight:400;color:#4A433B;line-height:1.4;margin-top:14px;font-style:italic;">Architecture, Converse, tool-use, caching.</div>
+      </div>
+      <div>
+        <div class="serif" style="font-size:54px;font-weight:600;color:#B8472A;line-height:1;">III</div>
+        <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.20em;color:#847B6E;text-transform:uppercase;margin-top:18px;">Context</div>
+        <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;line-height:1.2;margin-top:6px;">Alternatives</div>
+        <div class="serif" style="font-size:20px;font-weight:400;color:#4A433B;line-height:1.4;margin-top:14px;font-style:italic;">SageMaker, Q, OpenAI direct &mdash; trade-offs.</div>
+      </div>
+      <div>
+        <div class="serif" style="font-size:54px;font-weight:600;color:#B8472A;line-height:1;">IV</div>
+        <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.20em;color:#847B6E;text-transform:uppercase;margin-top:18px;">Field Notes</div>
+        <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;line-height:1.2;margin-top:6px;">A real pipeline</div>
+        <div class="serif" style="font-size:20px;font-weight:400;color:#4A433B;line-height:1.4;margin-top:14px;font-style:italic;">PII classifier &mdash; multi-agent, multi-model.</div>
+      </div>
+      <div>
+        <div class="serif" style="font-size:54px;font-weight:600;color:#B8472A;line-height:1;">V</div>
+        <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.20em;color:#847B6E;text-transform:uppercase;margin-top:18px;">Hands-on</div>
+        <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;line-height:1.2;margin-top:6px;">Live demo</div>
+        <div class="serif" style="font-size:20px;font-weight:400;color:#4A433B;line-height:1.4;margin-top:14px;font-style:italic;">Real input, real structured output.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom callout -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:900px;width:1680px;height:62px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:152px;top:917px;width:1620px;z-index:10;">
+    <div class="sans" style="font-size:20px;font-weight:500;letter-spacing:0.06em;color:#F4EFE6;line-height:1.4;">
+      <span style="color:#E89A6A;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;font-size:16px;">Note &nbsp;&middot;&nbsp;</span>
+      The second half is hands-on &mdash; we'll run real Bedrock calls on a real dataset.
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">02 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

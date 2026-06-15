@@ -1,0 +1,27 @@
+---
+title: "Code Quality Standards"
+description: "Project-specific code quality rules for Darwin framework"
+alwaysApply: true
+---
+
+# Code Quality Standards
+
+This is an HTML/CSS presentation deck, not a code project — "quality" here means **slide structure integrity** and **design-system fidelity**.
+
+## Slide Structure (primary standard)
+- Keep the slide canvas at **1920×1080** (`.slide-container` width/height and the `data-screen-label` wrapper).
+- Every visual element must keep its `data-object="true"` attribute and a valid `data-object-type` — only two values are used in this deck: `shape` and `textbox`. Do not invent new values or drop these markers; the HTML→PPTX export relies on them.
+- Preserve absolute positioning (`position:absolute`, explicit `left`/`top`/`width`) and `z-index` layering. When adding an element, give it explicit coordinates and a `z-index` consistent with siblings.
+- Each slide is a self-contained document that links `../assets/chrome.css`. Keep that link; do not inline the full stylesheet per slide.
+
+## Design-System Fidelity
+- Use the `chrome.css` CSS variables for color: `--paper`, `--paper-deep`, `--ink`, `--ink-soft`, `--ink-mute`, `--ember`, `--ember-deep`, `--gold`, and the `--code-*` tokens. Avoid hardcoded hex values that drift off-palette.
+- Use the defined type scale: `--t-display` 96 / `--t-h1` 64 / `--t-h2` 44 / `--t-h3` 32 / `--t-body` 26 / `--t-small` 20 / `--t-meta` 16.
+- Prefer the existing utility classes — `.serif`, `.sans`, `.mono`, `.eyebrow`, `.meta`, `.page-num`, `.codeblock`, `.paper-grain` — over ad-hoc inline font/family declarations.
+
+## Consistency
+- Keep `manifest.json`'s `playlist` in sync with the actual files in `slides/`.
+- When slide copy changes, keep `slide-text.md` aligned with what's rendered (and re-export the `.pptx` as a follow-up, not by hand-editing the export).
+
+## Quality Commands
+There is no linter/formatter/test runner in this project. Verification is visual: open the affected `slides/NN-*.html` in a browser at 1920×1080 and confirm layout, palette, and type scale.

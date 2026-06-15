@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Alternatives</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="10 Alternatives">
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 2 &nbsp;·&nbsp; Context</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 10 &nbsp;·&nbsp; The field</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">The Field</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:72px;font-weight:600;line-height:1.04;color:#1A1714;letter-spacing:-0.025em;">If not Bedrock, then what?</div>
+  </div>
+
+  <!-- 4-row comparison "table" with editorial feel -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:380px;width:1680px;z-index:10;">
+
+    <!-- header row -->
+    <div style="display:grid;grid-template-columns:340px 1fr 1fr 80px;column-gap:32px;padding:0 0 14px 0;border-bottom:1.5px solid #1A1714;">
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;">Option</div>
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;">What you get</div>
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;">Trade-off</div>
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;text-align:right;">Pick?</div>
+    </div>
+
+    <!-- row 1: SageMaker -->
+    <div style="display:grid;grid-template-columns:340px 1fr 1fr 80px;column-gap:32px;padding:24px 0;border-bottom:1px solid rgba(26,23,20,0.2);align-items:center;">
+      <div>
+        <div class="serif" style="font-size:30px;font-weight:600;color:#1A1714;line-height:1.15;">SageMaker JumpStart</div>
+        <div class="sans" style="font-size:14px;color:#847B6E;letter-spacing:0.06em;margin-top:4px;">Self-host on your endpoint</div>
+      </div>
+      <div class="serif" style="font-size:22px;color:#1A1714;line-height:1.4;">Deploy &amp; run models on your own infra &mdash; most control, most knobs.</div>
+      <div class="serif" style="font-size:22px;color:#4A433B;line-height:1.4;">You manage instances, scaling, ops, GPU bill.</div>
+      <div style="text-align:right;"><div class="serif" style="font-size:32px;font-weight:600;color:#847B6E;">○</div></div>
+    </div>
+
+    <!-- row 2: Lambda + external -->
+    <div style="display:grid;grid-template-columns:340px 1fr 1fr 80px;column-gap:32px;padding:24px 0;border-bottom:1px solid rgba(26,23,20,0.2);align-items:center;">
+      <div>
+        <div class="serif" style="font-size:30px;font-weight:600;color:#1A1714;line-height:1.15;">Lambda + external LLM</div>
+        <div class="sans" style="font-size:14px;color:#847B6E;letter-spacing:0.06em;margin-top:4px;">OpenAI / Anthropic direct</div>
+      </div>
+      <div class="serif" style="font-size:22px;color:#1A1714;line-height:1.4;">Call vendor APIs directly from your code &mdash; broadest model menu.</div>
+      <div class="serif" style="font-size:22px;color:#4A433B;line-height:1.4;">You manage keys; no AWS catalog or IAM-native auth.</div>
+      <div style="text-align:right;"><div class="serif" style="font-size:32px;font-weight:600;color:#847B6E;">○</div></div>
+    </div>
+
+    <!-- row 3: Amazon Q -->
+    <div style="display:grid;grid-template-columns:340px 1fr 1fr 80px;column-gap:32px;padding:24px 0;border-bottom:1px solid rgba(26,23,20,0.2);align-items:center;">
+      <div>
+        <div class="serif" style="font-size:30px;font-weight:600;color:#1A1714;line-height:1.15;">Amazon Q</div>
+        <div class="sans" style="font-size:14px;color:#847B6E;letter-spacing:0.06em;margin-top:4px;">Prebuilt AWS assistant</div>
+      </div>
+      <div class="serif" style="font-size:22px;color:#1A1714;line-height:1.4;">Higher-level assistant for AWS &amp; business workflows.</div>
+      <div class="serif" style="font-size:22px;color:#4A433B;line-height:1.4;">Opinionated; not raw model access.</div>
+      <div style="text-align:right;"><div class="serif" style="font-size:32px;font-weight:600;color:#847B6E;">○</div></div>
+    </div>
+
+    <!-- row 4: Bedrock (highlighted) -->
+    <div style="display:grid;grid-template-columns:340px 1fr 1fr 80px;column-gap:32px;padding:24px 24px;align-items:center;background:#1A1714;margin:0 -24px;">
+      <div>
+        <div class="serif" style="font-size:30px;font-weight:600;color:#F4EFE6;line-height:1.15;">Bedrock</div>
+        <div class="sans" style="font-size:14px;color:#E89A6A;letter-spacing:0.06em;margin-top:4px;">Managed catalog + raw API</div>
+      </div>
+      <div class="serif" style="font-size:22px;color:#F4EFE6;line-height:1.4;">One IAM-auth API, many models &mdash; no infra to run.</div>
+      <div class="serif" style="font-size:22px;color:#F4EFE6;line-height:1.4;opacity:0.85;">The middle ground &mdash; less control than SageMaker, more than Q.</div>
+      <div style="text-align:right;"><div class="serif" style="font-size:32px;font-weight:600;color:#E89A6A;">●</div></div>
+    </div>
+
+  </div>
+
+  <!-- bottom note -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:920px;width:6px;height:60px;background:#B8472A;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:148px;top:928px;width:1620px;z-index:10;">
+    <div class="serif" style="font-size:23px;font-weight:400;font-style:italic;line-height:1.4;color:#1A1714;">
+      <span class="sans" style="font-style:normal;font-size:13px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">In our repo &nbsp;·&nbsp;</span>
+      We <em>do</em> use OpenAI direct + OpenRouter for two sub-tasks &mdash; each needed its own wrapper module. That contrast is the lesson on slide 15.
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">10 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

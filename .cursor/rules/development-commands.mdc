@@ -1,0 +1,48 @@
+---
+title: "Development Commands"
+description: "Project-specific development commands for Darwin framework"
+alwaysApply: false
+---
+
+# Development Commands
+
+> Environment: **AWS Learner Lab**. Configure credentials from the lab's "AWS
+> Details" before running CLI commands. Every service used in the solution must
+> have a CLI command that runs successfully and is documented in `docs/`.
+
+## Setup
+- Configure AWS CLI with Learner Lab credentials (`aws configure` or paste the
+  lab-provided `~/.aws/credentials`).
+- Frontend: no install needed (static files). Open `frontend/index.html`
+  locally, or deploy to Amplify.
+
+## Backend deploy (per Lambda)
+- Package: `cd backend && zip -r function.zip <handler>.py` (add deps/layer if
+  the function needs a PDF library or other non-boto3 package).
+- Deploy via AWS console (Learner Lab) or
+  `aws lambda update-function-code --function-name <name> --zip-file fileb://function.zip`.
+
+## Frontend deploy
+- Host on **AWS Amplify** (assignment requirement). Connect the `frontend/`
+  directory or drag-and-drop a zip in the Amplify console; record the resulting
+  URL in `docs/`.
+
+## AWS CLI verification commands (deliverable — must run successfully)
+- DynamoDB table: `aws dynamodb describe-table --table-name orders`
+- Lambda functions: `aws lambda get-function --function-name <name>`
+- API Gateway: `aws apigateway get-rest-apis`
+- SNS topic: `aws sns get-topic-attributes --topic-arn <arn>`
+- SNS subscriptions: `aws sns list-subscriptions-by-topic --topic-arn <arn>`
+- S3 backup bucket: `aws s3 ls s3://<bucket-name>/`
+
+## Testing
+- No automated test suite. Test end-to-end via the web client and/or `curl`
+  against the API Gateway invoke URL. Capture screenshots of each tested flow
+  for the deliverable (see "List of tested flows").
+
+## Build
+- No build step for the frontend (static). Backend "build" = zip + deploy.
+
+## Run
+- Frontend: open the Amplify URL (or `frontend/index.html` locally).
+- Backend: invoked via API Gateway / events — no local run.

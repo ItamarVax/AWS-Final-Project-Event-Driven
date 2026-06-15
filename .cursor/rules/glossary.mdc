@@ -1,0 +1,19 @@
+---
+title: "Glossary"
+description: "Domain terminology for this project"
+alwaysApply: false
+---
+
+# Glossary
+
+| Term | Definition |
+|---|---|
+| Order | A record in the `orders` DynamoDB table: Order ID, Creation date, Price, Order description, Last modified date. |
+| `orders` table | The single DynamoDB table storing all orders, with a justified primary key and a sort key (e.g. for sorting by creation date). |
+| Notification subscription | An email address registered (via SNS) to receive a message when an order is deleted; can unsubscribe. |
+| Async notification | The post-delete email sent without blocking or delaying the delete response. |
+| Async backup | The post-delete write of order details as a TXT file to S3, run without blocking the delete response. |
+| PDF summary | An on-demand PDF aggregating all TXT backups in S3; the API returns its S3 URL in the response body. |
+| Freestyle enhancement | A self-chosen extra AWS service adding clear, demonstrable, UI-visible value (5 pts). To be decided. |
+| Client | The web app (HTML/CSS/JS on Amplify) that only calls APIs and displays results — no backend logic. |
+| AWS Learner Lab | The grading environment; all services must be verifiable there via runnable CLI commands. |

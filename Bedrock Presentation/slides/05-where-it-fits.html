@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Where it fits in AWS</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="05 Where it fits">
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 1 &nbsp;·&nbsp; Mechanics</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 05 &nbsp;·&nbsp; Placement</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">Placement</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:76px;font-weight:600;line-height:1.04;color:#1A1714;letter-spacing:-0.025em;">Two planes,<br>one regional service.</div>
+  </div>
+
+  <!-- two-plane panels -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:430px;width:840px;height:380px;background:transparent;border:1px solid #1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:158px;top:466px;width:765px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:600;letter-spacing:0.26em;color:#B8472A;text-transform:uppercase;">Control plane</div>
+    <div class="mono" style="font-size:34px;font-weight:600;color:#1A1714;margin-top:14px;">bedrock</div>
+    <div style="height:2px;width:60px;background:#B8472A;margin:22px 0;"></div>
+    <div class="serif" style="font-size:24px;line-height:1.5;color:#4A433B;">Manage &amp; discover &mdash; list models, view inference profiles, request access, see quotas. <em>Admin-side calls.</em></div>
+    <div class="sans" style="font-size:18px;font-weight:500;color:#847B6E;margin-top:22px;font-style:italic;">You touch this rarely.</div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:1000px;top:430px;width:840px;height:380px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1038px;top:466px;width:765px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:600;letter-spacing:0.26em;color:#E89A6A;text-transform:uppercase;">Runtime plane</div>
+    <div class="mono" style="font-size:34px;font-weight:600;color:#F4EFE6;margin-top:14px;">bedrock-runtime</div>
+    <div style="height:2px;width:60px;background:#E89A6A;margin:22px 0;"></div>
+    <div class="serif" style="font-size:24px;line-height:1.5;color:#F4EFE6;">Call models &mdash; <span class="mono" style="font-size:21px;color:#E89A6A;">converse()</span>, <span class="mono" style="font-size:21px;color:#E89A6A;">converse_stream()</span>. Token-billed, latency-sensitive, the hot path.</div>
+    <div class="sans" style="font-size:18px;font-weight:500;color:#847B6E;margin-top:22px;font-style:italic;">You live in this plane.</div>
+  </div>
+
+  <!-- ecosystem strip -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:850px;width:1680px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;margin-bottom:14px;">Integrates with</div>
+    <div style="display:flex;gap:48px;align-items:baseline;">
+      <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;">Lambda</div>
+      <div class="serif" style="font-size:30px;font-weight:300;color:#847B6E;">/</div>
+      <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;">Step Functions</div>
+      <div class="serif" style="font-size:30px;font-weight:300;color:#847B6E;">/</div>
+      <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;">CloudWatch</div>
+      <div class="serif" style="font-size:30px;font-weight:300;color:#847B6E;">/</div>
+      <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;">IAM</div>
+      <div class="serif" style="font-size:30px;font-weight:300;color:#847B6E;">/</div>
+      <div class="serif" style="font-size:30px;font-weight:500;color:#1A1714;">VPC endpoints</div>
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">05 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

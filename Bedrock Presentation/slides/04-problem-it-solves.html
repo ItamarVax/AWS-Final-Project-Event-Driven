@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The problem it solves</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="04 Problem solved">
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 1 &nbsp;·&nbsp; Foundations</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 04 &nbsp;·&nbsp; The pain</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">The Problem</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:76px;font-weight:600;line-height:1.04;color:#1A1714;letter-spacing:-0.025em;">Three SDKs, three key stores,<br>three request formats.</div>
+  </div>
+
+  <!-- comparison -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:440px;width:780px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:600;letter-spacing:0.26em;color:#847B6E;text-transform:uppercase;margin-bottom:18px;">Before &nbsp;·&nbsp; Without Bedrock</div>
+    <div style="background:#ECE5D6;padding:32px 36px;border-left:3px solid #1A1714;">
+      <div class="serif" style="font-size:24px;line-height:1.6;color:#1A1714;">
+        <div style="padding:10px 0;border-bottom:1px solid rgba(26,23,20,0.18);">One SDK + API key <em>per vendor</em></div>
+        <div style="padding:10px 0;border-bottom:1px solid rgba(26,23,20,0.18);">Secrets to store, rotate, audit</div>
+        <div style="padding:10px 0;border-bottom:1px solid rgba(26,23,20,0.18);">Each vendor's own request shape</div>
+        <div style="padding:10px 0;">Self-host means GPUs &amp; scaling</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- arrow / connector -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:920px;top:610px;width:80px;text-align:center;z-index:10;">
+    <div class="serif" style="font-size:64px;font-weight:600;color:#B8472A;line-height:1;">&rarr;</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1020px;top:440px;width:780px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:600;letter-spacing:0.26em;color:#B8472A;text-transform:uppercase;margin-bottom:18px;">After &nbsp;·&nbsp; With Bedrock</div>
+    <div style="background:#1A1714;padding:32px 36px;border-left:3px solid #B8472A;">
+      <div class="serif" style="font-size:24px;line-height:1.6;color:#F4EFE6;">
+        <div style="padding:10px 0;border-bottom:1px solid rgba(244,239,230,0.18);">One <span class="mono" style="font-size:21px;color:#E89A6A;">boto3</span> client</div>
+        <div style="padding:10px 0;border-bottom:1px solid rgba(244,239,230,0.18);"><strong style="color:#E89A6A;">IAM auth</strong> &mdash; no keys to leak</div>
+        <div style="padding:10px 0;border-bottom:1px solid rgba(244,239,230,0.18);">One <strong style="color:#E89A6A;">Converse</strong> request shape</div>
+        <div style="padding:10px 0;">Managed, scales to zero</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- bottom takeaway -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:900px;width:1680px;z-index:10;">
+    <div class="serif" style="font-size:30px;font-weight:400;font-style:italic;line-height:1.4;color:#1A1714;">
+      <span class="sans" style="font-style:normal;font-size:14px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">The take &nbsp;·&nbsp;</span>
+      Bedrock's win isn't &ldquo;another LLM service.&rdquo; It's <em>collapsing three of them</em> into one IAM-native API.
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">04 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Model mix + cost story</title>
+<link rel="stylesheet" href="../assets/chrome.css">
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+<div class="slide-container paper-grain" style="position:relative;width:1920px;height:1080px;overflow:hidden;background:#F4EFE6;" data-screen-label="13 Model mix cost">
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:120px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:78px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:600;letter-spacing:0.22em;color:#1A1714;text-transform:uppercase;">Part 2 &nbsp;·&nbsp; Field notes</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:78px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:15px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">Chapter 13 &nbsp;·&nbsp; The economics</div>
+  </div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:170px;width:1500px;z-index:10;">
+    <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;letter-spacing:0.30em;color:#B8472A;text-transform:uppercase;">The Economics</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:118px;top:205px;width:1700px;z-index:10;">
+    <div class="serif" style="font-size:72px;font-weight:600;line-height:1.04;color:#1A1714;letter-spacing:-0.025em;">Right model, right job.<br>One string apart.</div>
+  </div>
+
+  <!-- Table-style model matrix -->
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:410px;width:1280px;z-index:10;">
+
+    <!-- header -->
+    <div style="display:grid;grid-template-columns:1.5fr 1.4fr 0.7fr 0.7fr;column-gap:24px;padding:0 12px 12px 12px;border-bottom:1.5px solid #1A1714;">
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;">Task</div>
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;">Model</div>
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;text-align:right;">$ / M&nbsp;in</div>
+      <div class="sans" style="font-size:13px;font-weight:600;letter-spacing:0.24em;color:#847B6E;text-transform:uppercase;text-align:right;">$ / M&nbsp;out</div>
+    </div>
+
+    <!-- row: Haiku -->
+    <div style="display:grid;grid-template-columns:1.5fr 1.4fr 0.7fr 0.7fr;column-gap:24px;padding:18px 12px;border-bottom:1px solid rgba(26,23,20,0.18);align-items:center;">
+      <div class="serif" style="font-size:22px;color:#1A1714;">High-volume labeling</div>
+      <div class="serif" style="font-size:22px;font-weight:600;color:#1A1714;">Claude <em style="font-weight:500;">Haiku 4.5</em></div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">0.25</div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">1.25</div>
+    </div>
+
+    <!-- row: Nova 2 Lite (highlighted) -->
+    <div style="display:grid;grid-template-columns:1.5fr 1.4fr 0.7fr 0.7fr;column-gap:24px;padding:18px 12px;border-bottom:1px solid rgba(26,23,20,0.18);align-items:center;background:#ECE5D6;margin:0 -12px;padding-left:24px;padding-right:24px;">
+      <div class="serif" style="font-size:22px;color:#1A1714;"><strong>Default validator</strong></div>
+      <div class="serif" style="font-size:22px;font-weight:600;color:#1A1714;">Amazon <em style="font-weight:500;">Nova 2 Lite</em></div>
+      <div class="mono" style="font-size:22px;color:#B8472A;font-weight:600;text-align:right;">0.06</div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">0.24</div>
+    </div>
+
+    <!-- row: Sonnet -->
+    <div style="display:grid;grid-template-columns:1.5fr 1.4fr 0.7fr 0.7fr;column-gap:24px;padding:18px 12px;border-bottom:1px solid rgba(26,23,20,0.18);align-items:center;">
+      <div class="serif" style="font-size:22px;color:#1A1714;">Dataset gen / cross-check</div>
+      <div class="serif" style="font-size:22px;font-weight:600;color:#1A1714;">Claude <em style="font-weight:500;">Sonnet 4.6</em></div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">3.00</div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">15.00</div>
+    </div>
+
+    <!-- row: Opus 4.6 -->
+    <div style="display:grid;grid-template-columns:1.5fr 1.4fr 0.7fr 0.7fr;column-gap:24px;padding:18px 12px;border-bottom:1px solid rgba(26,23,20,0.18);align-items:center;">
+      <div class="serif" style="font-size:22px;color:#1A1714;">Judge (hard reasoning)</div>
+      <div class="serif" style="font-size:22px;font-weight:600;color:#1A1714;">Claude <em style="font-weight:500;">Opus 4.6</em></div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">5.00</div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">25.00</div>
+    </div>
+
+    <!-- row: Opus 4.8 -->
+    <div style="display:grid;grid-template-columns:1.5fr 1.4fr 0.7fr 0.7fr;column-gap:24px;padding:18px 12px;align-items:center;">
+      <div class="serif" style="font-size:22px;color:#1A1714;">Ground-truth audit</div>
+      <div class="serif" style="font-size:22px;font-weight:600;color:#1A1714;">Claude <em style="font-weight:500;">Opus 4.8</em></div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">5.00</div>
+      <div class="mono" style="font-size:22px;color:#1A1714;text-align:right;">25.00</div>
+    </div>
+
+  </div>
+
+  <!-- Right side: callouts -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:1430px;top:410px;width:1px;height:480px;background:#1A1714;opacity:0.35;z-index:1;"></div>
+
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1470px;top:415px;width:340px;z-index:10;">
+    <div class="sans" style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">Input cost compared</div>
+    <div class="serif" style="font-size:82px;font-weight:600;color:#1A1714;line-height:0.95;margin-top:10px;letter-spacing:-0.03em;">83×</div>
+    <div class="serif" style="font-size:19px;color:#4A433B;line-height:1.3;margin-top:6px;">Nova 2 Lite cheaper than Opus on input tokens.</div>
+
+    <div style="height:1px;width:60px;background:#1A1714;margin:20px 0;"></div>
+
+    <div class="serif" style="font-size:62px;font-weight:600;color:#1A1714;line-height:0.95;letter-spacing:-0.03em;">20×</div>
+    <div class="serif" style="font-size:19px;color:#4A433B;line-height:1.3;margin-top:6px;">Haiku cheaper than Opus on input tokens.</div>
+
+    <div style="height:1px;width:60px;background:#1A1714;margin:20px 0;"></div>
+
+    <div class="sans" style="font-size:12px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">Plus caching</div>
+    <div class="serif" style="font-size:19px;color:#1A1714;line-height:1.35;margin-top:6px;">Reused system prompt bills at <strong>10%</strong> on cache reads.</div>
+  </div>
+
+  <!-- Bottom takeaway -->
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:920px;width:6px;height:60px;background:#B8472A;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:148px;top:928px;width:1620px;z-index:10;">
+    <div class="serif" style="font-size:24px;font-weight:400;font-style:italic;line-height:1.4;color:#1A1714;">
+      <span class="sans" style="font-style:normal;font-size:13px;font-weight:600;letter-spacing:0.24em;color:#B8472A;text-transform:uppercase;">The story &nbsp;·&nbsp;</span>
+      Don't pay Opus to label 10,000 cheap findings. Reserve Opus for the hard judge step. Converse makes that a <em>config change</em>, not a project.
+    </div>
+  </div>
+
+  <div data-object="true" data-object-type="shape" style="position:absolute;left:120px;top:1000px;width:1680px;height:1px;background:#1A1714;z-index:1;"></div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:120px;top:1020px;width:900px;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">AWS Bedrock &nbsp;·&nbsp; A field report</div>
+  </div>
+  <div data-object="true" data-object-type="textbox" style="position:absolute;left:1380px;top:1020px;width:420px;text-align:right;z-index:10;">
+    <div class="sans" style="font-size:14px;font-weight:500;letter-spacing:0.18em;color:#847B6E;text-transform:uppercase;">13 / 16</div>
+  </div>
+
+</div>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
