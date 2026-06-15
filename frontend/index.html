@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Management · Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand__mark">&#9613;</span>
+      <span class="brand__name">ORDER MANAGEMENT</span>
+    </div>
+    <div class="env"><span class="env__dot"></span>prod &middot; us-east-1</div>
+  </header>
+
+  <nav class="nav">
+    <button class="nav__tab" data-tab="orders">Orders</button>
+    <button class="nav__tab" data-tab="inventory">Inventory</button>
+    <button class="nav__tab" data-tab="notifications">Notifications</button>
+    <button class="nav__tab" data-tab="summary">PDF Summary</button>
+  </nav>
+
+  <main class="wrap">
+    <!-- ORDERS -->
+    <section id="tab-orders" class="panel">
+      <div class="card">
+        <h2 class="card__title">New order <span id="orders-status" class="status"></span></h2>
+        <form id="order-form" class="form" novalidate>
+          <input type="hidden" id="order-id" />
+          <div class="field">
+            <label for="f-description">Description</label>
+            <input id="f-description" type="text" placeholder="Wireless mouse" autocomplete="off" />
+          </div>
+          <div class="field field--row">
+            <div>
+              <label for="f-price">Price (USD)</label>
+              <input id="f-price" type="number" step="0.01" min="0" placeholder="29.99" />
+            </div>
+            <div>
+              <label for="f-category">Category <span class="muted">(optional)</span></label>
+              <input id="f-category" type="text" placeholder="Electronics" autocomplete="off" />
+            </div>
+          </div>
+          <div class="scan">
+            <label class="btn btn--ghost" for="scan-input">&#128247; Scan item</label>
+            <input id="scan-input" type="file" accept="image/jpeg,image/png" hidden />
+            <span id="scan-status" class="scan__status"></span>
+          </div>
+          <div class="form__actions">
+            <button id="order-submit" type="submit" class="btn btn--accent">Create order</button>
+            <button id="order-cancel" type="button" class="btn btn--ghost" hidden>Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card" id="detail-card" hidden>
+        <h2 class="card__title">Order detail</h2>
+        <div id="order-detail"></div>
+      </div>
+    </section>
+
+    <!-- INVENTORY -->
+    <section id="tab-inventory" class="panel">
+      <div class="card">
+        <h2 class="card__title">Inventory <span id="inventory-status" class="status"></span></h2>
+        <button id="inventory-btn" class="btn btn--accent">Show inventory</button>
+        <div id="inventory-list"></div>
+      </div>
+    </section>
+
+    <!-- NOTIFICATIONS -->
+    <section id="tab-notifications" class="panel">
+      <div class="card">
+        <h2 class="card__title">Email notifications</h2>
+        <p class="hint">
+          Subscribe to get an email whenever an order is deleted. AWS sends a
+          confirmation link &mdash; you must confirm it before notifications start.
+        </p>
+        <form id="sub-form" class="form form--inline">
+          <input id="sub-email" type="email" placeholder="you@example.com" />
+          <button type="submit" class="btn btn--accent">Subscribe</button>
+        </form>
+        <form id="unsub-form" class="form form--inline">
+          <input id="unsub-email" type="email" placeholder="you@example.com" />
+          <button type="submit" class="btn btn--ghost">Unsubscribe</button>
+        </form>
+        <p id="notif-status" class="status"></p>
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section id="tab-summary" class="panel">
+      <div class="card">
+        <h2 class="card__title">PDF summary</h2>
+        <p class="hint">
+          Builds a PDF from every deleted-order backup stored in S3 and returns
+          a time-limited download link.
+        </p>
+        <button id="summary-btn" class="btn btn--accent">Generate PDF summary</button>
+        <div id="summary-result" class="summary-result"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/orders.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/summary.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
