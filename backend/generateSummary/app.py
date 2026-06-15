@@ -39,16 +39,16 @@ def lambda_handler(event, context):
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
     pdf.set_font("Helvetica", "B", 16)
-    pdf.multi_cell(0, 10, "Deleted Orders Summary")
+    pdf.multi_cell(0, 10, "Deleted Orders Summary", new_x="LMARGIN", new_y="NEXT")
     pdf.set_font("Helvetica", "", 10)
-    pdf.multi_cell(0, 8, _safe(f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%SZ')}"))
-    pdf.multi_cell(0, 8, f"Total deleted orders: {len(texts)}")
+    pdf.multi_cell(0, 8, _safe(f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%SZ')}"), new_x="LMARGIN", new_y="NEXT")
+    pdf.multi_cell(0, 8, f"Total deleted orders: {len(texts)}", new_x="LMARGIN", new_y="NEXT")
     pdf.ln(4)
 
     pdf.set_font("Courier", "", 10)
     for block in texts:
         for line in block.splitlines():
-            pdf.multi_cell(0, 6, _safe(line))
+            pdf.multi_cell(0, 6, _safe(line), new_x="LMARGIN", new_y="NEXT")
         pdf.ln(3)
 
     pdf_bytes = bytes(pdf.output())
