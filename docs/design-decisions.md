@@ -97,6 +97,23 @@ the REST APIs and displays results.
 - Amplify hosting is explicitly supported by the assignment.
 - Python on the backend fits the AWS Learner Lab, `boto3`, and PDF generation.
 
+### Clarification — "choose one" applies to the client, not the backend
+The assignment's "choose only one" refers to the **client/UI** (web UI *or*
+Python menu), not the backend language. A Python *Lambda backend* is mandatory
+either way and is **not** a second client. So "web UI + Python Lambda backend" is
+exactly **one** client (web) and is fully compliant — there is no conflict. The
+rule only forbids shipping *both* a web UI and a Python menu program as parallel
+front-ends (which would be extra work for zero extra points — the client is
+worth 10 points once).
+
+### System persona (chosen — the assignment leaves it open)
+Actor = an **internal warehouse/inventory supervisor** (org staff), not an
+external customer. Hints: there's no auth requirement, and notification
+subscribers are "users" who want awareness when orders are deleted (an
+audit/ops concern). The supervisor manages the orders list and creates orders;
+the orders list *is* the working inventory (no separate inventory entity — YAGNI).
+This persona gives the freestyle feature (Decision 9) a natural reason to exist.
+
 ---
 
 ## Decision 4 — The asynchronous delete fan-out (the core "event-driven" decision)
@@ -320,22 +337,87 @@ instead of one TXT per order), and it still requires a transformation Lambda.
 
 ---
 
+## Decision 9 — Freestyle enhancement (5 pts): AI-assisted order creation with Rekognition
+
+### The question
+Which AWS service (from the allowed list) should be the freestyle enhancement,
+and what functionality? It must add clear, demonstrable, **UI-visible** value,
+be a *different* service than EventBridge (used in the core), and ideally not
+fight the "entirely serverless" theme.
+
+### Options considered (allowed list)
+- **EventBridge** — already core; can't double-count. ❌
+- **CloudFormation** — already our build tool; not a UI-visible feature. ❌
+- **Amazon Rekognition** — AI image analysis (labels, text/OCR, moderation).
+- **Step Functions** — visual workflow orchestration.
+- **Amazon RDS** — managed relational DB.
+- **AWS CloudTrail** — account API audit log.
+- **AWS EFS** — shared elastic file system.
+- **AWS Elastic Beanstalk** — PaaS web-app hosting (EC2-backed).
+- *(Also considered earlier: **ECS** — rejected: not serverless, heavy VPC/IAM
+  setup in Learner Lab, weak UI-visible value. Same reasoning rejects EFS and
+  Elastic Beanstalk.)*
+
+### What we weighed
+- **Rekognition** is the only candidate that is simultaneously serverless,
+  low-setup, *and* yields a feature a grader can see and click. ✅✅ chosen.
+- **Step Functions** — solid serverless runner-up, photographs well, but its
+  value is backend orchestration so "visible from the UI" takes effort.
+- **RDS** — not serverless, overlaps DynamoDB, heavy Learner-Lab setup. ⚠️
+- **CloudTrail** — delayed, account-wide logs; weak real-time UI story. ⚠️
+- **EFS / Elastic Beanstalk / ECS** — non-serverless and/or no UI feature;
+  EFS is redundant with S3. ❌
+
+### Decision — AI-Assisted Order Creation (Amazon Rekognition)
+- **Story**: the supervisor (Decision 3 persona) creates an order; when unsure of
+  an item's description or price, he **snaps a photo**.
+- **Flow (analyze-then-confirm)**: photo → `analyzeImage` Lambda calls Rekognition
+  `detect_labels` → returns **description** + **category** + **confidence %s** →
+  backend adds a **price suggestion** from a hardcoded `category → price` map
+  (graceful fallback if no match) → web form **pre-fills** → supervisor edits
+  price/quantity → confirms → normal `POST /orders`.
+- **Honest framing**: Rekognition recognizes *what* the item is (real AI);
+  it cannot know price, so the price is a *suggestion* derived from a category
+  lookup and is always editable. Description/category are genuine AI output.
+- **Compliance**: all logic (Rekognition call, label→description, price lookup)
+  lives in the Lambda; the client only displays suggestions and submits a
+  standard create request.
+- **New stack pieces**: one Lambda (`analyzeImage`) + one endpoint
+  (`POST /orders/analyze-image`, with method/permission/CORS); image sent as
+  **base64 → Lambda → Rekognition `Bytes`** (no new bucket). Existing create path
+  unchanged.
+- **Price store**: **hardcoded `category → price` map in the Lambda** (not a
+  DynamoDB table) — YAGNI; the price store is invisible to graders and a table
+  for ~10 constants is over-engineering. A DynamoDB table would only win if
+  pricing needed to be runtime-editable (out of scope).
+- **Stretch (optional, not baseline)**: OCR price tags via `detect_text`; or
+  Bedrock-based price estimation (flagged as a possible *second* service).
+
+### Why not the others
+See the weighing above — every other candidate breaks serverless alignment,
+UI-visibility, or setup-cost, or is already used.
+
+---
+
 ## Summary of locked decisions
 
 | Area | Decision |
 |---|---|
 | Build method | CloudFormation (package + deploy); CLI commands as verification/docs |
 | Environment | AWS Learner Lab; reuse `LabRole` (no IAM creation); credentials rotate |
+| Persona | Internal warehouse/inventory supervisor (org staff), not a customer |
 | Client | Web (HTML/CSS/JS) on Amplify; Python Lambda backend; no client logic |
 | Delete fan-out | EventBridge hub → SNS (email) + backup Lambda (S3 TXT) |
 | Table key | Simple PK `orderId` (UUID) + GSI (constant PK, `creationDate` SK) |
 | GSI projection | `ALL` |
-| Lambda granularity | One Lambda per endpoint (9 Lambdas total) |
+| Lambda granularity | One Lambda per endpoint (9 Lambdas, +1 for freestyle = 10) |
 | Backup write | `backupDeletedOrder` Lambda → S3 (`{orderId}.txt`); not Firehose |
-| Freestyle (5 pts) | TBD — must differ from EventBridge |
+| Freestyle (5 pts) | Rekognition — AI-assisted order creation (`analyzeImage` Lambda + `POST /orders/analyze-image`); hardcoded category→price map |
 
 ## Open decisions
-- Freestyle enhancement service.
 - Final route paths (e.g. `DELETE /subscriptions` vs `POST /unsubscribe`;
   `GET /summary` method).
-- Per-service resource list for the CloudFormation template.
+- PDF dependency packaging for `generateSummary` (bundle `fpdf2` vs Lambda layer).
+- Propagate the freestyle's `analyzeImage` Lambda + endpoint into
+  `resource-list.md`, `api-contract.md`, and `template.yaml` (pending — done at
+  build/plan time).

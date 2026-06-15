@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+packaged.yaml
+# fpdf2 + other deps are installed into generateSummary at deploy time
+backend/generateSummary/*
+!backend/generateSummary/app.py
+# Part A (separate project) — not part of this backend repo
+Bedrock Presentation/
