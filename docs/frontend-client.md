@@ -39,15 +39,17 @@ The client has four tabs: **Orders**, **Inventory**, **Notifications**, and
   successful create (`POST /orders`) or update (`PUT /orders/{id}`), the client
   takes the returned `orderId` and calls `GET /orders/{id}` (getOrder) to render
   that single order in an "Order detail" panel. The panel includes an
-  "Edit this order" button that loads the order back into the form for update.
-  The Orders tab does **not** show the full order list.
+  "Edit this order" button that loads the order back into the form for update,
+  and a "Delete this order" button that calls `DELETE /orders/{id}` and hides
+  the panel. The Orders tab does **not** show the full order list.
 - **Inventory tab** — a "Show inventory" button calls `GET /orders` (listOrders)
   and renders all orders newest-first. Each row has two actions:
-  - **Edit** — calls `GET /orders/{id}` and opens that order in the Orders-tab
-    detail panel and form, ready for `PUT /orders/{id}`.
-  - **Delete** — calls `DELETE /orders/{id}`, then automatically refreshes the
-    inventory list. Deletion's email notification and S3 backup happen
-    asynchronously server-side and are invisible to the client.
+  - **Edit** — turns the row's description, price, and category into inputs
+    edited in place; Save calls `PUT /orders/{id}` and re-renders the row with
+    the updated values; Cancel restores the row.
+  - **Delete** — calls `DELETE /orders/{id}`, then removes the row. Deletion's
+    email notification and S3 backup happen asynchronously server-side and are
+    invisible to the client.
 - **Image scan (freestyle)** — "Scan item" uploads a JPEG/PNG to
   `POST /orders/analyze-image` (Rekognition). The detected description,
   suggested price, and category pre-fill the create form; the user reviews and

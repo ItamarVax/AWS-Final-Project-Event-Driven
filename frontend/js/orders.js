@@ -53,11 +53,26 @@
         <div><dt>Created</dt><dd>${escapeHtml(fmtDate(order.creationDate))}</dd></div>
         <div><dt>Last modified</dt><dd>${escapeHtml(fmtDate(order.lastModifiedDate))}</dd></div>
       </dl>
-      <button type="button" class="btn btn--ghost" id="detail-edit">Edit this order</button>`;
+      <div class="detail__actions">
+        <button type="button" class="btn btn--ghost" id="detail-edit">Edit this order</button>
+        <button type="button" class="btn btn--danger" id="detail-delete">Delete this order</button>
+      </div>`;
     detail.querySelector("#detail-edit").addEventListener("click", () => {
       fillForm(order);
       form.scrollIntoView({ behavior: "smooth", block: "start" });
     });
+    detail.querySelector("#detail-delete").addEventListener("click", () => handleDetailDelete(order));
+  }
+
+  // Delete the order currently shown in the detail panel.
+  async function handleDetailDelete(order) {
+    setStatus("Deleting…");
+    const { ok, data } = await api.deleteOrder(order.orderId);
+    if (!ok) { setStatus((data && data.error) || "Delete failed.", "error"); return; }
+    detailCard.hidden = true;
+    detail.innerHTML = "";
+    if (idField.value === order.orderId) resetForm();
+    setStatus((data && data.message) || "Order deleted.", "ok");
   }
 
   // GET /orders/{id} → show it in the detail panel.
@@ -106,19 +121,6 @@
     reader.onerror = () => { scanStatus.textContent = "Could not read the image file."; };
     reader.readAsDataURL(file);
   }
-
-  // Called by the Inventory tab: switch here, fetch via getOrder, show + edit.
-  async function editById(orderId) {
-    document.querySelector('[data-tab="orders"]').click();
-    setStatus("Loading order…");
-    const { ok, data } = await api.getOrder(orderId);
-    if (!ok) { setStatus((data && data.error) || "Failed to load order.", "error"); return; }
-    renderDetail(data);
-    fillForm(data);
-    setStatus("Editing order " + String(orderId).slice(0, 8) + "…", "ok");
-    form.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-  window.ordersEditById = editById;
 
   form.addEventListener("submit", handleSubmit);
   cancelBtn.addEventListener("click", resetForm);

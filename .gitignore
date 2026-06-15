@@ -7,3 +7,6 @@ backend/generateSummary/*
 !backend/generateSummary/app.py
 # Part A (separate project) — not part of this backend repo
 Bedrock Presentation/
+
+# Amplify deploy artifact
+frontend.zip

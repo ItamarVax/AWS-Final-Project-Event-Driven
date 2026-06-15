@@ -323,6 +323,14 @@ input:focus {
   color: var(--text);
   word-break: break-all;
 }
+.detail__actions { display: flex; gap: 10px; }
 
 /* inventory list appears only after "Show inventory" is clicked */
 #inventory-list:not(:empty) { margin-top: 16px; }
+
+/* inline row editing (Inventory tab) */
+.order-row--editing { align-items: start; }
+.row-edit { display: flex; flex-direction: column; gap: 8px; }
+.row-edit input { font-size: 13px; padding: 7px 10px; }
+.order-row--editing .order-row__price input { width: 110px; }
+.order-row--editing .order-row__actions { align-items: start; }
