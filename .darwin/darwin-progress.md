@@ -44,7 +44,7 @@ Conventions: parse body via `json.loads(event.get("body") or "{}")`; handle
 | T6 | generateSummary (fpdf2) | `backend/generateSummary/app.py` | T0 | COMPLETE |
 | T7 | analyzeImage (Rekognition) | `backend/analyzeImage/app.py` | T0 | COMPLETE |
 | T8 | doc sync (add analyzeImage) | `docs/resource-list.md`, `docs/api-contract.md` | T0 | COMPLETE |
-| T9 | template.yaml — add analyzeImage | `template.yaml` | T7 | PENDING |
+| T9 | template.yaml — add analyzeImage | `template.yaml` | T7 | COMPLETE |
 | T10 | deploy.sh | `deploy.sh` | T9 | PENDING |
 
 **Execution waves**

@@ -199,6 +199,17 @@ Resources:
         Variables:
           BACKUP_BUCKET: !Ref BackupBucket
 
+  AnalyzeImageFn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: analyzeImage
+      Runtime: python3.12
+      Handler: app.lambda_handler
+      Role: !Ref LabRoleArn
+      Timeout: 30
+      MemorySize: 256
+      Code: ./backend/analyzeImage
+
   # -------------------------------------------------------------------------
   # 5. API Gateway — REST API, paths, methods, permissions, deployment, stage
   # -------------------------------------------------------------------------
@@ -447,6 +458,52 @@ Resources:
             method.response.header.Access-Control-Allow-Methods: true
             method.response.header.Access-Control-Allow-Origin: true
 
+  # ----- Path + methods on /orders/analyze-image -----
+  AnalyzeImageResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref Api
+      ParentId: !Ref OrdersResource
+      PathPart: analyze-image
+
+  AnalyzeImageMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref AnalyzeImageResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AnalyzeImageFn.Arn}/invocations
+
+  AnalyzeImageOptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref Api
+      ResourceId: !Ref AnalyzeImageResource
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ''
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+
   # ----- Lambda permissions: allow API Gateway to invoke each function -----
   CreateOrderPermission:
     Type: AWS::Lambda::Permission
@@ -512,6 +569,14 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
 
+  AnalyzeImagePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref AnalyzeImageFn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/*
+
   # ----- Deployment + stage (must wait for all methods) -----
   ApiDeployment:
     Type: AWS::ApiGateway::Deployment
@@ -528,6 +593,8 @@ Resources:
       - SubscriptionsOptionsMethod
       - GetSummaryMethod
       - SummaryOptionsMethod
+      - AnalyzeImageMethod
+      - AnalyzeImageOptionsMethod
     Properties:
       RestApiId: !Ref Api
 
